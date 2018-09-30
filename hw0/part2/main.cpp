@@ -7,7 +7,7 @@ using namespace std;
 // start of simulation and end of simulation
 struct timeval start_time, end_time;
 
-int sc_main(){
+int sc_main(int argc, char **argv){
     Medianfilter median("median");
     
     sc_start();
