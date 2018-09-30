@@ -21,8 +21,8 @@ The example code of finding median value is too complex, I use STL sort instead.
     4. _write_finish: When the median value of R, G, and B three median values are written into output file pointer and the image is not completely filtered.
 ## Results
 ### Before
-[Imgur](https://i.imgur.com/tu9o14M.png)
+![Imgur](https://i.imgur.com/tu9o14M.png)
 ### After
-[Imgur](https://i.imgur.com/P76HgHK.png)
+![Imgur](https://i.imgur.com/P76HgHK.png)
 ## Discussion
 Some error will happen when -O3 flag is set on EE workstation(g++ 7.3.0). But use Apple LLVM 10.0.0 works well. 
