@@ -2,6 +2,7 @@
 // Chong-Yao, Zhang Jian
 // 30, Sept. 2018
 #include <iostream>
+#include <algorithm>
 #include <cstdio>
 #include <cstdlib>
 #include <cmath>
