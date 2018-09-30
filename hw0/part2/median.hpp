@@ -12,8 +12,6 @@ using namespace std;
 #include <systemc>
 using namespace sc_core;
 
-const int WHITE = 255;
-const int BLACK = 0;
 const int MASK_X = 3;
 const int MASK_Y = 3;
 

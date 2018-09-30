@@ -139,6 +139,7 @@ void Medianfilter::write_bmp() {
 
     // close output file
     fclose(fp_t);
+    sc_stop();
 }
 
 int Medianfilter::median(int* data, int end, int k){
