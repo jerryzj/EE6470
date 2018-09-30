@@ -37,7 +37,7 @@ private:
     unsigned int   rgb_raw_data_offset;// RGB raw data offset
     unsigned char  bit_per_pixel;      // bit per pixel
     unsigned short byte_per_pixel;     // byte per pixel
-    unsigned char header[54];          // BMP file header
+    const unsigned char header[54];          // BMP file header
     // Color arrays
     int red[MASK_X * MASK_Y];
     int green[MASK_X * MASK_Y];
