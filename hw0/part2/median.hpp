@@ -67,5 +67,5 @@ private:
     sc_event _median_finish;    // When median calculation is done
     sc_event _median_ready;     // When do_median & write_bmp finish
     sc_event _write_finish;     // When a pixel is written to image_t
-}
+};
 #endif

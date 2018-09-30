@@ -8,7 +8,7 @@ using namespace std;
 struct timeval start_time, end_time;
 
 int sc_main(){
-    Midianfilter median("median");
+    Medianfilter median("median");
     
     sc_start();
     cout<<"Simulated time == "<< sc_core::sc_time_stamp()<<endl;

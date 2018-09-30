@@ -71,7 +71,7 @@ void Medianfilter::read_bmp(const char *fname_s) {
     }
 }
 
-void Medianfilter::do_midian(){
+void Medianfilter::do_median(){
     while(1){
         wait(_read_finish);
         int filterSize = MASK_X * MASK_Y;
