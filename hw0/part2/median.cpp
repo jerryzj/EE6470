@@ -6,6 +6,8 @@ Medianfilter::Medianfilter(sc_module_name n) : sc_module(n){
     temp_r = 0;
     temp_g = 0;
     temp_b = 0;
+    x = 0;
+    y = 0;
     width = 0;
     height = 0;
     rgb_raw_data_offset = 0;
@@ -49,8 +51,8 @@ void Medianfilter::read_bmp(const char *fname_s) {
     fread(image_s, sizeof(unsigned char), (size_t)(long)width * height * byte_per_pixel, fp_s);
     fclose(fp_s); // clode file, image data now in image_s
 
-    for(int y = 0; y < height; y++){
-        for(int x = 0; x < width; x++){
+    for(y = 0; y < height; y++){
+        for(x = 0; x < width; x++){
             int n = 0;
             //set the color values in the arrays
             for(int filterY = 0; filterY < MASK_Y; filterY++){
@@ -69,11 +71,75 @@ void Medianfilter::read_bmp(const char *fname_s) {
     }
 }
 
-void Median::do_midian(){
+void Medianfilter::do_midian(){
     while(1){
         wait(_read_finish);
-
+        int filterSize = MASK_X * MASK_Y;
+        // Write result through pointer
+        temp_r = median(red, filterSize, filterSize / 2);
+        temp_g = median(green, filterSize, filterSize / 2);
+        temp_b = median(blue, filterSize, filterSize / 2);
+        _median_finish.notify();
+        wait(_write_finish);
+        _median_ready.notify();
     }
+}
+
+void write_bmp(const char *fname_t) {
+    unsigned int file_size; // file size
+
+    while(1){
+        wait(_median_finish);   // wait finding median
+        // Write color info.
+        *(image_t + byte_per_pixel * (width * y + x) + 2) = temp_r;
+        *(image_t + byte_per_pixel * (width * y + x) + 1) = temp_g;
+        *(image_t + byte_per_pixel * (width * y + x) + 0) = temp_b;
+        if(x == (width-1) && y == (height-1)){
+            break;
+        }
+        else{
+            _write_finish.notify();
+        }
+    }
+    fp_t = fopen(fname_t, "wb");
+    if (fp_t == NULL) {
+        printf("fopen fname_t error\n");
+    }
+
+    // file size 
+    file_size = width * height * byte_per_pixel + rgb_raw_data_offset;
+    header[2] = (unsigned char)(file_size & 0x000000ff);
+    header[3] = (file_size >> 8)  & 0x000000ff;
+    header[4] = (file_size >> 16) & 0x000000ff;
+    header[5] = (file_size >> 24) & 0x000000ff;
+
+    // width
+    header[18] = width & 0x000000ff;
+    header[19] = (width >> 8)  & 0x000000ff;
+    header[20] = (width >> 16) & 0x000000ff;
+    header[21] = (width >> 24) & 0x000000ff;
+
+    // height
+    header[22] = height &0x000000ff;
+    header[23] = (height >> 8)  & 0x000000ff;
+    header[24] = (height >> 16) & 0x000000ff;
+    header[25] = (height >> 24) & 0x000000ff;
+
+    // bit per pixel
+    header[28] = bit_per_pixel;
+    // write header
+    fwrite(header, sizeof(unsigned char), rgb_raw_data_offset, fp_t);
+
+    // write image
+    fwrite(image_t, sizeof(unsigned char), (size_t)(long)width * height * byte_per_pixel, fp_t);
+
+    // close output file
+    fclose(fp_t);
+}
+
+int Medianfilter::median(int* data, int end, int k){
+    sort(data, data + end);
+    return data[k];
 }
 
 Medianfilter::~Medianfilter(){

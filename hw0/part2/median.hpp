@@ -5,6 +5,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <string>
+#include <algorithm>
 #include <sys/time.h>
 using namespace std;
 
@@ -21,8 +22,8 @@ public:
     SC_HAS_PROCESS(Medianfilter);
     Medianfilter(sc_module_name n);
     ~Medianfilter();
-    void read_bmp();
-    void write_bmp();
+    void read_bmp(const char *fname_s);
+    void write_bmp(const char *fname_t);
 private:
     // Functions
     void do_median();                       // median filter call
@@ -31,13 +32,14 @@ private:
     int temp_r;
     int temp_g;
     int temp_b;
+    int x, y;                   // index being shared between read_bmp & do_median
     unsigned char *image_s;     // source image array
     unsigned char *image_t;     // target image array
     unsigned int   width, height;      // image width, image height
     unsigned int   rgb_raw_data_offset;// RGB raw data offset
     unsigned char  bit_per_pixel;      // bit per pixel
     unsigned short byte_per_pixel;     // byte per pixel
-    unsigned char header[54] = {
+    unsigned char header[54] = {       // BMP file header
         0x42,        // identity : B
         0x4d,        // identity : M
         0, 0, 0, 0,  // file size
@@ -63,9 +65,7 @@ private:
     // SystemC events
     sc_event _read_finish;      // When a mask of data is read from image_s
     sc_event _median_finish;    // When median calculation is done
-    sc_event _median_ready;     //
+    sc_event _median_ready;     // When do_median & write_bmp finish
     sc_event _write_finish;     // When a pixel is written to image_t
 }
-
-
 #endif
