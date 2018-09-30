@@ -162,7 +162,7 @@ void median_filter(){
         }
       }
       int filterSize = MASK_X * MASK_Y;
-      // Write result to target through pointer
+      // Write result through pointer
       *(image_t + byte_per_pixel * (width * y + x) + 2) = median(red, filterSize, filterSize / 2);
       *(image_t + byte_per_pixel * (width * y + x) + 1) = median(green, filterSize, filterSize / 2);
       *(image_t + byte_per_pixel * (width * y + x) + 0) = median(blue, filterSize, filterSize / 2);
