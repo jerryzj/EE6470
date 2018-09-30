@@ -1,6 +1,6 @@
 all:
-	clang++ -Wall -O3 medium_filter.cpp -o medium_filter
+	clang++ -Wall -O3 -std=c++14 median_filter.cpp -o median_filter
 run: 
-	./medium_filter
+	./median_filter
 clean:
-	rm medium_filter
+	rm median_filter

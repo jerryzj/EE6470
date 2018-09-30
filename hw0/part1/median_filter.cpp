@@ -1,19 +1,16 @@
-// EE6470 HW1 Medium Filter
+// EE6470 HW1 Median Filter
 // Chong-Yao, Zhang Jian
 // 30, Sept. 2018
 #include <iostream>
 #include <cstdio>
 #include <cstdlib>
 #include <cmath>
-#include <algorithm>
 
 using namespace std;
 
-const int MASK_N = 2;
+// Filter parameters and Color definitions
 const int MASK_X  = 3;
 const int MASK_Y = 3;
-const int WHITE = 255;
-const int BLACK = 0;
 
 unsigned char *image_s = NULL;     // source image array
 unsigned char *image_t = NULL;     // target image array
@@ -24,6 +21,11 @@ unsigned int   width, height;      // image width, image height
 unsigned int   rgb_raw_data_offset;// RGB raw data offset
 unsigned char  bit_per_pixel;      // bit per pixel
 unsigned short byte_per_pixel;     // byte per pixel
+
+//color arrays
+int red[MASK_X * MASK_Y];
+int green[MASK_X * MASK_Y];
+int blue[MASK_X * MASK_Y];
 
 // bitmap header
 unsigned char header[54] = {
@@ -45,14 +47,16 @@ unsigned char header[54] = {
   0, 0, 0, 0,  // used colors
   0, 0, 0, 0   // important colors
 };
+
 // Function declarations
 int read_bmp(const char *fname_s);
 int write_bmp(const char *fname_t);
-void medium_filter();
+void median_filter();
+int median(int* data, int end, int k);
 
 int main(void) {
-  read_bmp("lena.bmp"); // 24 bit gray level image
-  medium_filter();
+  read_bmp("lena.bmp");
+  median_filter();
   write_bmp("lena_filtered.bmp");
 
   return 0;
@@ -78,7 +82,6 @@ int read_bmp(const char *fname_s) {
   fseek(fp_s, 28, SEEK_SET);
   fread(&bit_per_pixel, sizeof(unsigned short), 1, fp_s);
   byte_per_pixel = bit_per_pixel / 8;
- 
   // move offset to rgb_raw_data_offset to get RGB raw data
   fseek(fp_s, rgb_raw_data_offset, SEEK_SET);
      
@@ -142,6 +145,31 @@ int write_bmp(const char *fname_t) {
   return 0;
 }
 
-void medium_filter(){
-  
+void median_filter(){
+  for(int y = 0; y < height; y++){
+    for(int x = 0; x < width; x++){
+      int n = 0;
+      //set the color values in the arrays
+      for(int filterY = 0; filterY < MASK_Y; filterY++){
+        for(int filterX = 0; filterX < MASK_X; filterX++){
+          int imageX = (x - MASK_X / 2 + filterX + width) % width;
+          int  imageY = (y - MASK_Y / 2 + filterY + height) % height;
+          red[n] = *(image_s + byte_per_pixel * (width * imageY + imageX) + 2);
+          green[n] = *(image_s + byte_per_pixel * (width * imageY + imageX) + 1);
+          blue[n] = *(image_s + byte_per_pixel * (width * imageY + imageX) + 0);
+          n++;
+        }
+      }
+      int filterSize = MASK_X * MASK_Y;
+      // Write result to target through pointer
+      *(image_t + byte_per_pixel * (width * y + x) + 2) = median(red, filterSize, filterSize / 2);
+      *(image_t + byte_per_pixel * (width * y + x) + 1) = median(green, filterSize, filterSize / 2);
+      *(image_t + byte_per_pixel * (width * y + x) + 0) = median(blue, filterSize, filterSize / 2);
+    }
+  }
+}
+
+int median(int* data, int end, int k){
+  sort(data, data + end);
+  return data[k];
 }
