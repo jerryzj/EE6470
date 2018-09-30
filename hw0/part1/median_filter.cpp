@@ -147,8 +147,8 @@ int write_bmp(const char *fname_t) {
 }
 
 void median_filter(){
-  for(int y = 0; y < height; y++){
-    for(int x = 0; x < width; x++){
+  for(unsigned int y = 0; y < height; y++){
+    for(unsigned int x = 0; x < width; x++){
       int n = 0;
       //set the color values in the arrays
       for(int filterY = 0; filterY < MASK_Y; filterY++){
