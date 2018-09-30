@@ -13,7 +13,7 @@ Medianfilter::Medianfilter(sc_module_name n) : sc_module(n){
     rgb_raw_data_offset = 0;
     bit_per_pixel = 0;
     byte_per_pixel = 0;
-    header[54] = {
+    header[] = {
         0x42,        // identity : B
         0x4d,        // identity : M
         0, 0, 0, 0,  // file size
