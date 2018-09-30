@@ -85,7 +85,7 @@ void Medianfilter::do_median(){
     }
 }
 
-void write_bmp(const char *fname_t) {
+void Medianfilter::write_bmp(const char *fname_t) {
     unsigned int file_size; // file size
 
     while(1){
