@@ -12,18 +12,19 @@ Medianfilter::Medianfilter(sc_module_name n) : sc_module(n){
     height = 0;
     rgb_raw_data_offset = 0;
     byte_per_pixel = 0;
-    SC_THREAD(write_bmp("lena_filtered.bmp"));
+    SC_THREAD(write_bmp);
     SC_THREAD(do_median);
-    SC_THREAD(read_bmp("lena.bmp"));
+    SC_THREAD(read_bmp);
 }
 
 void Medianfilter::read_bmp() {
     const char *fname_s = "lena.bmp";
+    FILE *fp_s = NULL;
+    
     fp_s = fopen(fname_s, "rb");
     if (fp_s == NULL) {
         cerr<<"fopen fp_s error"<<endl;
     }
- 
     // move offset to 10 to find rgb raw data offset
     fseek(fp_s, 10, SEEK_SET);
     fread(&rgb_raw_data_offset, sizeof(unsigned int), 1, fp_s);
@@ -89,6 +90,7 @@ void Medianfilter::do_median(){
 void Medianfilter::write_bmp() {
     unsigned int file_size; // file size
     const char *fname_t = "lena_filtered.bmp";
+    FILE *fp_t = NULL;
 
     while(1){
         wait(_median_finish);   // wait finding median
