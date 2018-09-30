@@ -37,7 +37,25 @@ private:
     unsigned int   rgb_raw_data_offset;// RGB raw data offset
     unsigned char  bit_per_pixel;      // bit per pixel
     unsigned short byte_per_pixel;     // byte per pixel
-    const unsigned char header[54];          // BMP file header
+    unsigned char header[54] = {
+        0x42,        // identity : B
+        0x4d,        // identity : M
+        0, 0, 0, 0,  // file size
+        0, 0,        // reserved1
+        0, 0,        // reserved2
+        54, 0, 0, 0, // RGB data offset
+        40, 0, 0, 0, // struct BITMAPINFOHEADER size
+        0, 0, 0, 0,  // bmp width
+        0, 0, 0, 0,  // bmp height
+        1, 0,        // planes
+        24, 0,       // bit per pixel
+        0, 0, 0, 0,  // compression
+        0, 0, 0, 0,  // data size
+        0, 0, 0, 0,  // h resolution
+        0, 0, 0, 0,  // v resolution
+        0, 0, 0, 0,  // used colors
+        0, 0, 0, 0   // important colors
+    };
     // Color arrays
     int red[MASK_X * MASK_Y];
     int green[MASK_X * MASK_Y];
