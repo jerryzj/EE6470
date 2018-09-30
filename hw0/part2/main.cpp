@@ -11,7 +11,5 @@ int sc_main(int argc, char **argv){
     Medianfilter median("median");
     
     sc_start();
-    cout<<"Simulated time == "<< sc_core::sc_time_stamp()<<endl;
-    
     return 0;
 }
