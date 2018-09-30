@@ -22,8 +22,8 @@ public:
     SC_HAS_PROCESS(Medianfilter);
     Medianfilter(sc_module_name n);
     ~Medianfilter();
-    void read_bmp(const char *fname_s);
-    void write_bmp(const char *fname_t);
+    void read_bmp();
+    void write_bmp();
 private:
     // Functions
     void do_median();                       // median filter call

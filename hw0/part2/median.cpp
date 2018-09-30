@@ -17,7 +17,8 @@ Medianfilter::Medianfilter(sc_module_name n) : sc_module(n){
     SC_THREAD(read_bmp("lena.bmp"));
 }
 
-void Medianfilter::read_bmp(const char *fname_s) {
+void Medianfilter::read_bmp() {
+    const char *fname_s = "lena.bmp";
     fp_s = fopen(fname_s, "rb");
     if (fp_s == NULL) {
         cerr<<"fopen fp_s error"<<endl;
@@ -85,8 +86,9 @@ void Medianfilter::do_median(){
     }
 }
 
-void Medianfilter::write_bmp(const char *fname_t) {
+void Medianfilter::write_bmp() {
     unsigned int file_size; // file size
+    const char *fname_t = "lena_filtered.bmp";
 
     while(1){
         wait(_median_finish);   // wait finding median
