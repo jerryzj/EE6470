@@ -207,7 +207,7 @@ sint Medianfilter::partition(sint* list, sint left, sint right){
     return (i + 1);
 }
 
-void swap_int(sint* a, sint* b){
+void Medianfilter::swap_int(sint* a, sint* b){
     sint t = *a;
     *a = *b;
     *b = t;
