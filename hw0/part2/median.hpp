@@ -17,7 +17,7 @@ using sint = sc_int<64>;
 
 const int MASK_X = 3;
 const int MASK_Y = 3;
-int MASK_SIZE = MASK_X * MASK_Y;
+const int MASK_SIZE = MASK_X * MASK_Y;
 
 class Medianfilter: public sc_module{
 public:

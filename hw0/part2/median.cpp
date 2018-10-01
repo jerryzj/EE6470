@@ -156,6 +156,10 @@ int Medianfilter::median(int* data, int end, int k){
 
 int Medianfilter::median_systemC(int* data, int size, int k){
     sint filter[size];
+    for(int i = 0; i < size; i++){
+        filter[i] = data[i];
+    }
+
     // Create a stack
     sint stack[size + 1];
     // initialize top of the stack
@@ -163,9 +167,7 @@ int Medianfilter::median_systemC(int* data, int size, int k){
     sint p = 0;
     sint left = 0;
     sint right = size - 1;
-    for(int i = 0; i < size; i++){
-        filter[i] = data[i];
-    }
+    
     // push initial values of l and h to stack
     stack[ ++top ] = filter[left];
     stack[ ++top ] = filter[right];
@@ -190,7 +192,7 @@ int Medianfilter::median_systemC(int* data, int size, int k){
             stack[ ++top ] = right;
         }
     }
-    return (int)filter[k];
+    return filter[k];
 }
 
 sint Medianfilter::partition(sint* list, sint left, sint right){
