@@ -10,10 +10,12 @@
 using namespace std;
 
 #include <systemc>
+using namespace sc_dt;
 using namespace sc_core;
 
 const int MASK_X = 3;
 const int MASK_Y = 3;
+const int MASK_SIZE = MASK_X * MASK_Y;
 
 class Medianfilter: public sc_module{
 public:
@@ -26,6 +28,9 @@ private:
     // Functions
     void do_median();                       // median filter call
     int median(int* data, int end, int k);  // find median number(not index)
+    int median_systemC(int* data, int size, int k);
+    sc_int partition(sc_int* list, sc_int left, sc_int right);
+    void swap_int(sc_int* a, sc_int* b);
     // Variables
     int temp_r;
     int temp_g;
@@ -57,9 +62,9 @@ private:
         0, 0, 0, 0   // important colors
     };
     // Color arrays
-    int red[MASK_X * MASK_Y];
-    int green[MASK_X * MASK_Y];
-    int blue[MASK_X * MASK_Y];
+    int red[MASK_SIZE];
+    int green[MASK_SIZE];
+    int blue[MASK_SIZE];
     // SystemC events
     sc_event _read_finish;      // When a mask of data is read from image_s
     sc_event _median_finish;    // When median calculation is done

@@ -1,5 +1,6 @@
 #include "median.hpp"
 
+using namespace sc_dt;
 Medianfilter::Medianfilter(sc_module_name n) : sc_module(n){
     temp_r = 0;
     temp_g = 0;
@@ -13,9 +14,9 @@ Medianfilter::Medianfilter(sc_module_name n) : sc_module(n){
     rgb_raw_data_offset = 0;
     bit_per_pixel = 0;
     byte_per_pixel = 0;
-    red[MASK_X * MASK_Y] = {0};
-    green[MASK_X * MASK_Y] = {0};
-    blue[MASK_X * MASK_Y] = {0};
+    red[MASK_SIZE] = {0};
+    green[MASK_SIZE] = {0};
+    blue[MASK_SIZE] = {0};
     SC_THREAD(write_bmp);
     SC_THREAD(do_median);
     SC_THREAD(read_bmp);
@@ -80,11 +81,11 @@ void Medianfilter::read_bmp() {
 void Medianfilter::do_median(){
     while(1){
         wait(_read_finish);
-        int filterSize = MASK_X * MASK_Y;
+        int k = MASK_SIZE / 2;
         // Write result through pointer
-        temp_r = median(red, filterSize, filterSize / 2);
-        temp_g = median(green, filterSize, filterSize / 2);
-        temp_b = median(blue, filterSize, filterSize / 2);
+        temp_r = median(red, MASK_SIZE, k);
+        temp_g = median(green, MASK_SIZE, k);
+        temp_b = median(blue, MASK_SIZE, k);
         _median_finish.notify();
         wait(_write_finish);
         _median_ready.notify();
@@ -149,6 +150,66 @@ void Medianfilter::write_bmp() {
 int Medianfilter::median(int* data, int end, int k){
     sort(data, data + end);
     return data[k];
+}
+
+int Medianfilter::median_systemC(int* data, int size, int k){
+    sc_int filter[size] = {0};
+    // Create a stack
+    sc_int stack[size + 1];
+    // initialize top of the stack
+    int top = -1;
+    sc_int p = 0;
+    sc_int left = 0;
+    sc_int right = size - 1;
+    for(int i = 0; i < size; i++){
+        filter[i] = data[i];
+    }
+    // push initial values of l and h to stack
+    stack[ ++top ] = filter[left];
+    stack[ ++top ] = filter[right];
+    // Keep popping from stack while not empty
+    while ( top >= 0 ){
+        // Pop h and l
+        right = stack[ top-- ];
+        left = stack[ top-- ];
+        // Set pivot element at its correct position
+        // in sorted array
+        p = partition(filter, left, right );
+        // If there are elements on left side of pivot,
+        // then push left side to stack
+        if ( p-1 > left ){
+            stack[ ++top ] = left;
+            stack[ ++top ] = p - 1;
+        }
+        // If there are elements on right side of pivot,
+        // then push right side to stack
+        if ( p+1 < right ){
+            stack[ ++top ] = p + 1;
+            stack[ ++top ] = right;
+        }
+    }
+    return (int)filter[k];
+}
+
+sc_int Medianfilter::partition(sc_int* list, sc_int left, sc_int right){
+    sc_int x = list[right];
+    sc_int i = (left - 1);
+    sc_int j = 0;
+ 
+    for (j = left; j <= right- 1; j++){
+        if (list[j] <= x){
+            i++;
+            swap_int (&list[i], &list[j]);
+        }
+    }
+    swap_int (&list[i + 1], &list[right]);
+    return (i + 1);
+}
+
+void swap_int(sc_int* a, sc_int* b){
+    sc_int t = *a;
+    *a = *b;
+    *b = t;
 }
 
 Medianfilter::~Medianfilter(){
