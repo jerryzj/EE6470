@@ -12,6 +12,8 @@ using namespace std;
 #include <systemc>
 using namespace sc_dt;
 using namespace sc_core;
+using sint = sc_int<32>;
+
 
 const int MASK_X = 3;
 const int MASK_Y = 3;
@@ -29,8 +31,8 @@ private:
     void do_median();                       // median filter call
     int median(int* data, int end, int k);  // find median number(not index)
     int median_systemC(int* data, int size, int k);
-    sc_int partition(sc_int* list, sc_int left, sc_int right);
-    void swap_int(sc_int* a, sc_int* b);
+    sint partition(sint* list, sint left, sint right);
+    void swap_int(sint* a, sint* b);
     // Variables
     int temp_r;
     int temp_g;
