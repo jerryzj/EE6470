@@ -5,7 +5,6 @@
 #include <cstdio>
 #include <cstdlib>
 #include <string>
-#include <algorithm>
 #include <sys/time.h>
 using namespace std;
 
@@ -30,9 +29,6 @@ private:
     // Functions
     void do_median();                       // median filter call
     int median(int* data, int end, int k);  // find median number(not index)
-    int median_systemC(int* data, int size, int k);
-    sint partition(sint* list, sint left, sint right);
-    void swap_int(sint* a, sint* b);
     // Variables
     int temp_r;
     int temp_g;

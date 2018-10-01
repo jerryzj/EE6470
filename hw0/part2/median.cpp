@@ -85,12 +85,6 @@ void Medianfilter::do_median(){
         temp_r = median(red, MASK_SIZE, k);
         temp_g = median(green, MASK_SIZE, k);
         temp_b = median(blue, MASK_SIZE, k);
-        //temp_r = median_systemC(red, MASK_SIZE, k);
-        //cout<<"RED"<<endl;
-        //temp_g = median_systemC(green, MASK_SIZE, k);
-        //cout<<"GREEN"<<endl;
-        //temp_b = median_systemC(blue, MASK_SIZE, k);
-        //cout<<"BLUE"<<endl;
         _median_finish.notify();
         wait(_write_finish);
         _median_ready.notify();
@@ -153,86 +147,20 @@ void Medianfilter::write_bmp() {
 }
 
 int Medianfilter::median(int* data, int end, int k){
-    //sort(data, data + end);
     sint i = 0;
     sint key = 0;
     sint j = 0;
-     
+    // Insertion sort
     for (i = 1; i < end; i++) { 
         key = data[i]; 
         j = i-1; 
-        /* Move elements of arr[0..i-1], that are 
-            greater than key, to one position ahead 
-            of their current position */
         while (j >= 0 && data[j] > key) { 
             data[j+1] = data[j]; 
             j = j-1; 
         } 
         data[j+1] = key; 
-   } 
+    } 
     return data[k];
-}
-
-int Medianfilter::median_systemC(int* data, int size, int k){
-    sint filter[size];
-    for(int i = 0; i < size; i++){
-        filter[i] = data[i];
-    }
-
-    // Create a stack
-    sint stack[size + 1];
-    // initialize top of the stack
-    sint top = -1;
-    sint p = 0;
-    sint left = 0;
-    sint right = size - 1;
-    
-    // push initial values of l and h to stack
-    stack[ ++top ] = filter[left];
-    stack[ ++top ] = filter[right];
-    // Keep popping from stack while not empty
-    while ( top >= 0 ){
-        // Pop h and l
-        right = stack[ top-- ];
-        left = stack[ top-- ];
-        // Set pivot element at its correct position
-        // in sorted array
-        p = partition(filter, left, right );
-        // If there are elements on left side of pivot,
-        // then push left side to stack
-        if ( p-1 > left ){
-            stack[ ++top ] = left;
-            stack[ ++top ] = p - 1;
-        }
-        // If there are elements on right side of pivot,
-        // then push right side to stack
-        if ( p+1 < right ){
-            stack[ ++top ] = p + 1;
-            stack[ ++top ] = right;
-        }
-    }
-    return filter[k];
-}
-
-sint Medianfilter::partition(sint* list, sint left, sint right){
-    sint x = list[right];
-    sint i = (left - 1);
-    sint j = 0;
- 
-    for (j = left; j <= right- 1; j++){
-        if (list[j] <= x){
-            i++;
-            swap_int (&list[i], &list[j]);
-        }
-    }
-    swap_int (&list[i + 1], &list[right]);
-    return (i + 1);
-}
-
-void Medianfilter::swap_int(sint* a, sint* b){
-    sint t = *a;
-    *a = *b;
-    *b = t;
 }
 
 Medianfilter::~Medianfilter(){
