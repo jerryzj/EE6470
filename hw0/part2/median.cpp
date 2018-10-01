@@ -1,7 +1,5 @@
 #include "median.hpp"
 
-using namespace sc_dt;
-using namespace sc_core;
 Medianfilter::Medianfilter(sc_module_name n) : sc_module(n){
     temp_r = 0;
     temp_g = 0;
