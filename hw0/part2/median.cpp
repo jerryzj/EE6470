@@ -81,7 +81,6 @@ void Medianfilter::do_median(){
     while(1){
         wait(_read_finish);
         int k = MASK_SIZE / 2;
-        cout<<"k = "<<k<<endl;
         // Write result through pointer
         temp_r = median(red, MASK_SIZE, k);
         temp_g = median(green, MASK_SIZE, k);
@@ -154,7 +153,23 @@ void Medianfilter::write_bmp() {
 }
 
 int Medianfilter::median(int* data, int end, int k){
-    sort(data, data + end);
+    //sort(data, data + end);
+    sint i = 0;
+    sint key = 0;
+    sint j = 0;
+     
+    for (i = 1; i < end; i++) { 
+        key = data[i]; 
+        j = i-1; 
+        /* Move elements of arr[0..i-1], that are 
+            greater than key, to one position ahead 
+            of their current position */
+        while (j >= 0 && data[j] > key) { 
+            data[j+1] = data[j]; 
+            j = j-1; 
+        } 
+        data[j+1] = key; 
+   } 
     return data[k];
 }
 

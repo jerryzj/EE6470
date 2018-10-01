@@ -12,7 +12,7 @@ using namespace std;
 #include <systemc>
 using namespace sc_dt;
 using namespace sc_core;
-using sint = sc_int<64>;
+using sint = sc_int<32>;
 
 
 const int MASK_X = 3;
