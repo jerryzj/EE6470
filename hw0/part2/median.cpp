@@ -84,9 +84,12 @@ void Medianfilter::do_median(){
         wait(_read_finish);
         int k = MASK_SIZE / 2;
         // Write result through pointer
-        temp_r = median(red, MASK_SIZE, k);
-        temp_g = median(green, MASK_SIZE, k);
-        temp_b = median(blue, MASK_SIZE, k);
+        //temp_r = median(red, MASK_SIZE, k);
+        //temp_g = median(green, MASK_SIZE, k);
+        //temp_b = median(blue, MASK_SIZE, k);
+        temp_r = median_systemC(red, MASK_SIZE, k);
+        temp_g = median_systemC(green, MASK_SIZE, k);
+        temp_b = median_systemC(blue, MASK_SIZE, k);
         _median_finish.notify();
         wait(_write_finish);
         _median_ready.notify();
