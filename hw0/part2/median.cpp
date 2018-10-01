@@ -191,7 +191,7 @@ int Medianfilter::median_systemC(int* data, int size, int k){
     return (int)filter[k];
 }
 
-sc_int Medianfilter::partition(sc_int* list, sc_int left, sc_int right){
+sc_uint Medianfilter::partition(sc_uint* list, sc_uint left, sc_uint right){
     sc_int x = list[right];
     sc_int i = (left - 1);
     sc_int j = 0;
@@ -206,7 +206,7 @@ sc_int Medianfilter::partition(sc_int* list, sc_int left, sc_int right){
     return (i + 1);
 }
 
-void swap_int(sc_int* a, sc_int* b){
+void swap_int(sc_uint* a, sc_uint* b){
     sc_int t = *a;
     *a = *b;
     *b = t;

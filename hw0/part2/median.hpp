@@ -29,8 +29,8 @@ private:
     void do_median();                       // median filter call
     int median(int* data, int end, int k);  // find median number(not index)
     int median_systemC(int* data, int size, int k);
-    sc_int partition(sc_int* list, sc_int left, sc_int right);
-    void swap_int(sc_int* a, sc_int* b);
+    sc_uint partition(sc_uint* list, sc_uint left, sc_uint right);
+    void swap_int(sc_uint* a, sc_uint* b);
     // Variables
     int temp_r;
     int temp_g;
