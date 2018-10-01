@@ -1,6 +1,7 @@
 #include "median.hpp"
 
 using namespace sc_dt;
+using namespace sc_core;
 Medianfilter::Medianfilter(sc_module_name n) : sc_module(n){
     temp_r = 0;
     temp_g = 0;
@@ -191,7 +192,7 @@ int Medianfilter::median_systemC(int* data, int size, int k){
     return (int)filter[k];
 }
 
-sc_uint Medianfilter::partition(sc_uint* list, sc_uint left, sc_uint right){
+sc_int Medianfilter::partition(sc_int* list, sc_int left, sc_int right){
     sc_int x = list[right];
     sc_int i = (left - 1);
     sc_int j = 0;
@@ -206,7 +207,7 @@ sc_uint Medianfilter::partition(sc_uint* list, sc_uint left, sc_uint right){
     return (i + 1);
 }
 
-void swap_int(sc_uint* a, sc_uint* b){
+void swap_int(sc_int* a, sc_int* b){
     sc_int t = *a;
     *a = *b;
     *b = t;
