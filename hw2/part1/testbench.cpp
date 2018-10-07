@@ -106,7 +106,7 @@ void Testbench::write_bmp() {
                 wait(i_blue.data_written_event());
             }
         }
-        if(x == (width) && y == (height)){
+        if(x == (width) && y == (height) && width >0 && height >0){
             cout << "Width = "<<width<<endl;
             cout<<"Height = "<<height<<endl;
             cout<<"ready to write file"<<endl;
