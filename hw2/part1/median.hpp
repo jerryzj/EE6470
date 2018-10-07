@@ -26,14 +26,9 @@ public:
     sc_fifo_out<int*> o_green;
     sc_fifo_out<int*> o_blue;
     // Write bmp inputs
-    sc_fifo_in<int>  i_x;
-    sc_fifo_in<int>  i_y;
     sc_fifo_in<int> i_red;
     sc_fifo_in<int> i_green;
     sc_fifo_in<int> i_blue;
-
-    sc_event *o_read_finish;
-    sc_event *i_median_finish;
 
     SC_CTOR(Testbench) {
         filter_r[MASK_SIZE] = {0};
