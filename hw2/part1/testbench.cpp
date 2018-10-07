@@ -105,6 +105,7 @@ void Testbench::write_bmp() {
             }
         }
         if(x == (width) && y == (height)){
+            cout<<"ready to write file"<<endl;
             break;
         }
     }
