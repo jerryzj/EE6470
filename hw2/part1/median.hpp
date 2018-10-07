@@ -55,7 +55,7 @@ private:
     int filter_g[MASK_SIZE];
     int filter_b[MASK_SIZE];
     // write bmp
-    int x, y;
+    unsigned int x, y;
     int temp_r,temp_g,temp_b;
     // shared variables
     unsigned int   width;

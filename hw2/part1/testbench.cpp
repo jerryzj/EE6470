@@ -56,9 +56,7 @@ void Testbench::read_bmp() {
             o_red.write(filter_r);
             o_green.write(filter_g);
             o_blue.write(filter_b);
-            wait(1, SC_NS);
-            //o_read_finish->notify();  // mask data ready
-            //wait(*i_median_finish);   // wait for median processing is ready(median_finish & write_finish)
+            wait(i_blue.data_written_event());
         }
     }
 }

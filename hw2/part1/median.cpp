@@ -20,7 +20,7 @@ void Median::do_median(){
             o_blue.write(blue[k]);
         }
         else{
-            wait();
+            wait(i_blue.data_written_event());
         }
     }
 }
