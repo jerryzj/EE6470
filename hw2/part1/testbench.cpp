@@ -96,7 +96,7 @@ void Testbench::write_bmp() {
             ++counter;
         }
         else{
-            if(counter == width * height){
+            if(counter == width * height && width != 0 && height != 0){
                 break;
             }
             if(i_red.num_available() < 1){
