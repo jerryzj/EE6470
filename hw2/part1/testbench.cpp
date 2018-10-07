@@ -82,7 +82,7 @@ void Testbench::write_bmp() {
             temp_r = i_red.read();
             temp_g = i_green.read();
             temp_b = i_blue.read();
-            cout<<"--RECEIVE";
+            cout<<"--RECEIVE--";
             cout<<"RED = "<<temp_r<<", ";
             cout<<"GREEN = "<<temp_g<<", ";
             cout<<"BLUE = "<<temp_b<<endl;
@@ -141,5 +141,6 @@ void Testbench::write_bmp() {
     fwrite(image_t, sizeof(unsigned char), (size_t)(long)width * height * byte_per_pixel, fp_t);
     // close output file
     fclose(fp_t);
+    cout<<"Output file closed"<<endl;
     sc_stop();
 }
