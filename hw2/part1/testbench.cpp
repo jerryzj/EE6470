@@ -105,8 +105,6 @@ void Testbench::write_bmp() {
             }
         }
     }
-    cout << "Width = "<<width<<endl;
-    cout<<"Height = "<<height<<endl;
     fp_t = fopen(fname_t, "wb");
     if (fp_t == NULL) {
         printf("fopen fname_t error\n");
@@ -140,6 +138,6 @@ void Testbench::write_bmp() {
     fwrite(image_t, sizeof(unsigned char), (size_t)(long)width * height * byte_per_pixel, fp_t);
     // close output file
     fclose(fp_t);
-    cout<<"Output file closed"<<endl;
+    cout<<"Output file generated successfully"<<endl;
     sc_stop();
 }
