@@ -48,6 +48,7 @@ public:
         image_t = NULL;
         counter = 0;
         SC_THREAD(write_bmp);
+        dont_initialize();
         SC_THREAD(read_bmp);
     }
 private:
