@@ -82,6 +82,10 @@ void Testbench::write_bmp() {
             temp_r = i_red.read();
             temp_g = i_green.read();
             temp_b = i_blue.read();
+            cout<<"--RECEIVE";
+            cout<<"RED = "<<temp_r<<", ";
+            cout<<"GREEN = "<<temp_g<<", ";
+            cout<<"BLUE = "<<temp_b<<endl;
             *(image_t + byte_per_pixel * (width * y + x) + 2) = temp_r;
             *(image_t + byte_per_pixel * (width * y + x) + 1) = temp_g;
             *(image_t + byte_per_pixel * (width * y + x) + 0) = temp_b;
