@@ -94,6 +94,12 @@ void Testbench::write_bmp() {
             temp_g = 0;
             temp_b = 0;
         }
+        else if(x == (width) && y == (height)){
+            cout << "Width = "<<width<<endl;
+            cout<<"Height = "<<height<<endl;
+            cout<<"ready to write file"<<endl;
+            break;
+        }
         else{
             if(i_red.num_available() < 1){
                 wait(i_red.data_written_event());
@@ -105,12 +111,7 @@ void Testbench::write_bmp() {
                 wait(i_blue.data_written_event());
             }
         }
-        if(x == (width) && y == (height)){
-            cout << "Width = "<<width<<endl;
-            cout<<"Height = "<<height<<endl;
-            cout<<"ready to write file"<<endl;
-            break;
-        }
+        
     }
     cout << "Width = "<<width<<endl;
     cout<<"Height = "<<height<<endl;
