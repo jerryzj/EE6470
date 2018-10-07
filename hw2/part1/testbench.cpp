@@ -83,6 +83,7 @@ void Testbench::write_bmp() {
             temp_g = i_green.read();
             temp_b = i_blue.read();
             cout<<"--RECEIVE--";
+            cout<<" x = "<<x<<" y = "<<y<<endl;
             cout<<"RED = "<<temp_r<<", ";
             cout<<"GREEN = "<<temp_g<<", ";
             cout<<"BLUE = "<<temp_b<<endl;
@@ -105,6 +106,8 @@ void Testbench::write_bmp() {
             }
         }
         if(x == (width) && y == (height)){
+            cout << "Width = "<<width<<endl;
+            cout<<"Height = "<<height<<endl;
             cout<<"ready to write file"<<endl;
             break;
         }
