@@ -46,6 +46,7 @@ public:
         byte_per_pixel = 0;
         image_s = NULL;
         image_t = NULL;
+        counter = 0;
         SC_THREAD(write_bmp);
         SC_THREAD(read_bmp);
     }
@@ -58,6 +59,7 @@ private:
     unsigned int x, y;
     int temp_r,temp_g,temp_b;
     // shared variables
+    int counter;
     unsigned int   width;
     unsigned int   height;
     unsigned int   rgb_raw_data_offset;
