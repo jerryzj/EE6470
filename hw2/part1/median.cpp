@@ -15,9 +15,6 @@ void Median::do_median(){
             sort(red,red+MASK_SIZE);
             sort(green,green+MASK_SIZE);
             sort(blue,blue+MASK_SIZE);
-            cout<<"RED = "<<red[k]<<", ";
-            cout<<"GREEN = "<<green[k]<<", ";
-            cout<<"BLUE = "<<blue[k]<<endl;
             o_red.write(red[k]);
             o_green.write(green[k]);
             o_blue.write(blue[k]);
