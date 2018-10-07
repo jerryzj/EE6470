@@ -109,6 +109,8 @@ void Testbench::write_bmp() {
             break;
         }
     }
+    cout << "Width = "<<width<<endl;
+    cout<<"Height = "<<height<<endl;
     fp_t = fopen(fname_t, "wb");
     if (fp_t == NULL) {
         printf("fopen fname_t error\n");
