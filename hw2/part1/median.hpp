@@ -5,6 +5,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <string>
+#include <algorithm>
 #include <sys/time.h>
 using namespace std;
 
@@ -18,28 +19,57 @@ const int MASK_X = 3;
 const int MASK_Y = 3;
 const int MASK_SIZE = MASK_X * MASK_Y;
 
-class Medianfilter: public sc_module{
+SC_MODULE(Testbench){
 public:
-    SC_HAS_PROCESS(Medianfilter);
-    Medianfilter(sc_module_name n);
-    ~Medianfilter();
-    void read_bmp();
-    void write_bmp();
+    // Read bmp outputs
+    sc_fifo_out<int*> o_red;
+    sc_fifo_out<int*> o_green;
+    sc_fifo_out<int*> o_blue;
+    // Write bmp inputs
+    sc_fifo_in<int>  i_x;
+    sc_fifo_in<int>  i_y;
+    sc_fifo_in<int> i_red;
+    sc_fifo_in<int> i_green;
+    sc_fifo_in<int> i_blue;
+
+    sc_event *o_read_finish;
+    sc_event *i_median_finish;
+
+    SC_CTOR(Testbench) {
+        filter_r[MASK_SIZE] = {0};
+        filter_g[MASK_SIZE] = {0};
+        filter_b[MASK_SIZE] = {0};
+        x = 0;
+        y = 0;
+        temp_r = 0;
+        temp_g = 0;
+        temp_b = 0;
+        width = 0;
+        height = 0;
+        rgb_raw_data_offset = 0;
+        bit_per_pixel = 0;
+        byte_per_pixel = 0;
+        image_s = NULL;
+        image_t = NULL;
+        SC_THREAD(write_bmp);
+        SC_THREAD(read_bmp);
+    }
 private:
-    // Functions
-    void do_median();                       // median filter call
-    int median(int* data, int end, int k);  // find median number(not index)
-    // Variables
-    int temp_r;
-    int temp_g;
-    int temp_b;
-    int x, y;                   // index being shared between read_bmp & do_median
-    unsigned char *image_s;     // source image array
-    unsigned char *image_t;     // target image array
-    unsigned int   width, height;      // image width, image height
-    unsigned int   rgb_raw_data_offset;// RGB raw data offset
-    unsigned char  bit_per_pixel;      // bit per pixel
-    unsigned short byte_per_pixel;     // byte per pixel
+    // read bmp
+    int filter_r[MASK_SIZE];
+    int filter_g[MASK_SIZE];
+    int filter_b[MASK_SIZE];
+    // write bmp
+    int x, y;
+    int temp_r,temp_g,temp_b;
+    // shared variables
+    unsigned int   width;
+    unsigned int   height;
+    unsigned int   rgb_raw_data_offset;
+    unsigned char  bit_per_pixel;
+    unsigned short byte_per_pixel;
+    unsigned char  *image_s;     // source image array
+    unsigned char  *image_t;     // target image array
     unsigned char header[54] = {
         0x42,        // identity : B
         0x4d,        // identity : M
@@ -59,14 +89,37 @@ private:
         0, 0, 0, 0,  // used colors
         0, 0, 0, 0   // important colors
     };
-    // Color arrays
+    void read_bmp();
+    void write_bmp();
+};
+
+SC_MODULE(Median){
+public:
+    // Inputs
+    sc_fifo_in<int*> i_red;
+    sc_fifo_in<int*> i_green;
+    sc_fifo_in<int*> i_blue;
+    // Outputs
+    sc_fifo_out<int> o_red;
+    sc_fifo_out<int> o_green;
+    sc_fifo_out<int> o_blue;
+
+    SC_CTOR(Median) {
+        red_ptr = NULL;
+        green_ptr = NULL;
+        blue_ptr = NULL;
+        red[MASK_SIZE] = {0};
+        green[MASK_SIZE] = {0};
+        blue[MASK_SIZE] = {0};
+        SC_THREAD(do_median);
+    }
+private:
+    int* red_ptr;
+    int* green_ptr;
+    int* blue_ptr;
     int red[MASK_SIZE];
     int green[MASK_SIZE];
     int blue[MASK_SIZE];
-    // SystemC events
-    sc_event _read_finish;      // When a mask of data is read from image_s
-    sc_event _median_finish;    // When median calculation is done
-    sc_event _median_ready;     // When do_median & write_bmp finish
-    sc_event _write_finish;     // When a pixel is written to image_t
+    void do_median();
 };
 #endif
