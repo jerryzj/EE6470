@@ -67,17 +67,6 @@ void Testbench::write_bmp() {
     FILE *fp_t = NULL;
 
     while(1){
-        /* wait(*i_median_finish);   // wait finding median
-        // Write color info.
-        *(image_t + byte_per_pixel * (width * y + x) + 2) = temp_r;
-        *(image_t + byte_per_pixel * (width * y + x) + 1) = temp_g;
-        *(image_t + byte_per_pixel * (width * y + x) + 0) = temp_b;
-        if(x == (width-1) && y == (height-1)){
-            break;
-        } */
-        /* else{
-            //_write_finish.notify();
-        } */
         if(i_red.num_available() > 0 && i_green.num_available() > 0 && i_blue.num_available() > 0){
             temp_r = i_red.read();
             temp_g = i_green.read();
