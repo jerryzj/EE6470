@@ -59,9 +59,6 @@ void Testbench::read_bmp() {
                 for(int filterX = 0; filterX < MASK_X; filterX++){
                     int imageX = (x - MASK_X / 2 + filterX + width) % width;
                     int  imageY = (y - MASK_Y / 2 + filterY + height) % height;
-                    old_r[n] = filter_r[n];
-                    old_g[n] = filter_g[n];
-                    old_b[n] = filter_b[n];
                     filter_r[n] = *(image_s + byte_per_pixel * (width * imageY + imageX) + 2);
                     filter_g[n] = *(image_s + byte_per_pixel * (width * imageY + imageX) + 1);
                     filter_b[n] = *(image_s + byte_per_pixel * (width * imageY + imageX) + 0);
@@ -78,6 +75,7 @@ void Testbench::read_bmp() {
                     ++pixel_counter;
                 }
             }
+            cout<<pixel_counter<< " transmitted"<<endl;
             wait(i_blue.data_written_event());
         }
     }

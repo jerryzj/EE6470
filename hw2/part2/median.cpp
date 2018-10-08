@@ -14,6 +14,7 @@ void Median::do_median(){
                 blue[index] = blue_ptr;
                 ++pixel_counter;
             }
+            cout<<pixel_counter<<" received"<<endl;
             for(int i = 0; i < MASK_SIZE; i++){
                 sort_r[i] = red[i];
                 sort_g[i] = green[i];
@@ -28,7 +29,7 @@ void Median::do_median(){
             o_blue.write(sort_b[k]);
         }
         else{
-            wait(i_blue.data_written_event());
+            wait(i_update_index.data_written_event());
         }
     }
 }
