@@ -56,7 +56,7 @@ void Testbench::read_bmp() {
             o_red.write(filter_r);
             o_green.write(filter_g);
             o_blue.write(filter_b);
-            pixel_counter += 9;
+            pixel_counter += MASK_SIZE;
             wait(i_blue.data_written_event());
         }
     }
