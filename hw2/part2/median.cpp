@@ -32,13 +32,18 @@ void Median::do_median(){
                 blue_ptr = i_blue.read();
                 blue[index] = blue_ptr;
             }
+            for(int i = 0; i < MASK_SIZE; i++){
+                sort_r[i] = red[i];
+                sort_g[i] = green[i];
+                sort_b[i] = blue[i];
+            }
             int k = MASK_SIZE / 2;
-            sort(red,red+MASK_SIZE);
-            sort(green,green+MASK_SIZE);
-            sort(blue,blue+MASK_SIZE);
-            o_red.write(red[k]);
-            o_green.write(green[k]);
-            o_blue.write(blue[k]);
+            sort(sort_r,sort_r+MASK_SIZE);
+            sort(sort_g,sort_g+MASK_SIZE);
+            sort(sort_b,sort_b+MASK_SIZE);
+            o_red.write(sort_r[k]);
+            o_green.write(sort_g[k]);
+            o_blue.write(sort_b[k]);
         }
         else{
             wait(i_blue.data_written_event());
