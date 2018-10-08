@@ -47,16 +47,24 @@ void Testbench::read_bmp() {
                 for(int filterX = 0; filterX < MASK_X; filterX++){
                     int imageX = (x - MASK_X / 2 + filterX + width) % width;
                     int  imageY = (y - MASK_Y / 2 + filterY + height) % height;
+                    old_r[n] = filter_r[n];
+                    old_g[n] = filter_g[n];
+                    old_b[n] = filter_b[n];
                     filter_r[n] = *(image_s + byte_per_pixel * (width * imageY + imageX) + 2);
                     filter_g[n] = *(image_s + byte_per_pixel * (width * imageY + imageX) + 1);
                     filter_b[n] = *(image_s + byte_per_pixel * (width * imageY + imageX) + 0);
                     n++;
                 }
             }
-            o_red.write(filter_r);
-            o_green.write(filter_g);
-            o_blue.write(filter_b);
-            wait(i_blue.data_written_event());
+            for(int i = 0; i < MASK_SIZE; i++){
+                if(old_r[i] != filter_r[i]){
+                    o_update_index.write(i);
+                    o_red.write(filter_r[i]);
+                    o_green.write(filter_g[i]);
+                    o_blue.write(filter_b[i]);
+                    wait(i_blue.data_written_event());
+                }
+            }
         }
     }
 }

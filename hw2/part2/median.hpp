@@ -22,9 +22,10 @@ const int MASK_SIZE = MASK_X * MASK_Y;
 SC_MODULE(Testbench){
 public:
     // Read bmp outputs
-    sc_fifo_out<int*> o_red;
-    sc_fifo_out<int*> o_green;
-    sc_fifo_out<int*> o_blue;
+    sc_fifo_out<int> o_red;
+    sc_fifo_out<int> o_green;
+    sc_fifo_out<int> o_blue;
+    sc_fifo_out<int> o_update_index;
     // Write bmp inputs
     sc_fifo_in<int> i_red;
     sc_fifo_in<int> i_green;
@@ -34,6 +35,9 @@ public:
         filter_r[MASK_SIZE] = {0};
         filter_g[MASK_SIZE] = {0};
         filter_b[MASK_SIZE] = {0};
+        old_r[MASK_SIZE] = {0};
+        old_g[MASK_SIZE] = {0};
+        old_b[MASK_SIZE] = {0};
         x = 0;
         y = 0;
         temp_r = 0;
@@ -55,6 +59,9 @@ private:
     int filter_r[MASK_SIZE];
     int filter_g[MASK_SIZE];
     int filter_b[MASK_SIZE];
+    int old_r[MASK_SIZE];
+    int old_g[MASK_SIZE];
+    int old_b[MASK_SIZE];
     // write bmp
     unsigned int x, y;
     int temp_r,temp_g,temp_b;
@@ -93,9 +100,10 @@ private:
 SC_MODULE(Median){
 public:
     // Inputs
-    sc_fifo_in<int*> i_red;
-    sc_fifo_in<int*> i_green;
-    sc_fifo_in<int*> i_blue;
+    sc_fifo_in<int> i_red;
+    sc_fifo_in<int> i_green;
+    sc_fifo_in<int> i_blue;
+    sc_fifo_in<int> i_update_index;
     // Outputs
     sc_fifo_out<int> o_red;
     sc_fifo_out<int> o_green;
@@ -111,9 +119,9 @@ public:
         SC_THREAD(do_median);
     }
 private:
-    int* red_ptr;
-    int* green_ptr;
-    int* blue_ptr;
+    int red_ptr;
+    int green_ptr;
+    int blue_ptr;
     int red[MASK_SIZE];
     int green[MASK_SIZE];
     int blue[MASK_SIZE];
