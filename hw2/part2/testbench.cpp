@@ -76,8 +76,11 @@ void Testbench::read_bmp() {
                     o_green.write(filter_g[i]);
                     o_blue.write(filter_b[i]);
                     ++pixel_counter;
+                    cout<<"Index ";
+                    cout<<i<<" ";
                 }
             }
+            cout<<endl;
             cout<<pixel_counter<< " transmitted"<<endl;
             wait(i_blue.data_written_event());
         }
