@@ -105,30 +105,13 @@ void Testbench::write_bmp() {
             if(counter == width * height && width != 0 && height != 0){
                 break;
             }
-            if(i_green.num_available() < 1 && i_blue.num_available() < 1){
-                wait(i_green.data_written_event());
-                wait(i_blue.data_written_event());
-            }
-            else if(i_red.num_available() < 1 && i_blue.num_available() < 1){
-                wait(i_red.data_written_event());
-                wait(i_blue.data_written_event());
-            }
-            else if(i_red.num_available() < 1 && i_green.num_available() < 1){
-                wait(i_red.data_written_event());
-                wait(i_green.data_written_event());
-            }
-            else if(i_red.num_available() < 1){
+            if(i_red.num_available() < 1){
                 wait(i_red.data_written_event());
             }
             else if(i_green.num_available() < 1){
                 wait(i_green.data_written_event());
             }
-            else if(i_blue.num_available() < 1){
-                wait(i_blue.data_written_event());
-            }
             else{
-                wait(i_red.data_written_event());
-                wait(i_green.data_written_event());
                 wait(i_blue.data_written_event());
             }
         }
