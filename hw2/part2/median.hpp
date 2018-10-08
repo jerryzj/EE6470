@@ -110,9 +110,9 @@ public:
     sc_fifo_out<int> o_blue;
 
     SC_CTOR(Median) {
-        red_ptr = NULL;
-        green_ptr = NULL;
-        blue_ptr = NULL;
+        red_ptr = 0;
+        green_ptr = 0;
+        blue_ptr = 0;
         red[MASK_SIZE] = {0};
         green[MASK_SIZE] = {0};
         blue[MASK_SIZE] = {0};
