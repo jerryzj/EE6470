@@ -67,7 +67,7 @@ void Testbench::read_bmp() {
             }
             pixel_counter = 0;
             for(int i = 0; i < MASK_SIZE; i++){
-                if(old_r[i] != filter_r[i]){
+                if(old_r[i] != filter_r[i] || old_g[i] != filter_g[i] || old_b[i] != filter_b[i]){
                     o_update_index.write(i);
                     o_red.write(filter_r[i]);
                     o_green.write(filter_g[i]);
