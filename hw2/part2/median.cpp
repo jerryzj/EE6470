@@ -14,7 +14,6 @@ void Median::do_median(){
                 blue[index] = blue_ptr;
                 ++pixel_counter;
             }
-            cout<<"There are "<<pixel_counter<<" received"<<endl;
             for(int i = 0; i < MASK_SIZE; i++){
                 sort_r[i] = red[i];
                 sort_g[i] = green[i];

@@ -78,7 +78,6 @@ void Testbench::read_bmp() {
                     ++pixel_counter;
                 }
             }
-            cout<<"There are "<<pixel_counter<<" tranmitted"<<endl;
             wait(i_blue.data_written_event());
         }
     }
