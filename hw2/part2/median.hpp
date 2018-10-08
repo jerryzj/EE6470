@@ -122,6 +122,9 @@ public:
         sort_r[MASK_SIZE] = {0};
         sort_g[MASK_SIZE] = {0};
         sort_b[MASK_SIZE] = {0};
+        old_r[MASK_SIZE] = {0};
+        old_g[MASK_SIZE] = {0};
+        old_b[MASK_SIZE] = {0};
         SC_THREAD(do_median);
     }
 private:
@@ -132,6 +135,9 @@ private:
     int red[MASK_SIZE];
     int green[MASK_SIZE];
     int blue[MASK_SIZE];
+    int old_r[MASK_SIZE];
+    int old_g[MASK_SIZE];
+    int old_b[MASK_SIZE];
     int sort_r[MASK_SIZE];
     int sort_g[MASK_SIZE];
     int sort_b[MASK_SIZE];

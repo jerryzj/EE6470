@@ -3,21 +3,20 @@
 void Median::do_median(){
     while(1){
         if(i_red.num_available() > 0 && i_green.num_available() > 0 && i_blue.num_available() > 0){        
+            for(int j = 0; j < MASK_SIZE; j++){
+                if(j % MASK_X == MASK_X - 1){
+                    red[j] = 0;
+                    green[j] = 0;
+                    blue[j] = 0;
+                }
+                else{
+                    red[j] = old_r[j+1];
+                    green[j] = old_g[j+1];
+                    blue[j] = old_b[j+1];
+                }
+            }
             pixel_counter = 0;
             while(i_update_index.num_available() > 0){
-                for(int j = 0; j < MASK_SIZE; j++){
-                    if(j % MASK_X == MASK_X - 1){
-                        red[j] = 0;
-                        green[j] = 0;
-                        blue[j] = 0;
-                        //continue;
-                    }
-                    else{
-                        red[j] = red[j+1];
-                        green[j] = green[j+1];
-                        blue[j] = blue[j+1];
-                    }
-                }
                 int index = i_update_index.read();
                 red_ptr = i_red.read();
                 red[index] = red_ptr;
@@ -32,6 +31,9 @@ void Median::do_median(){
                 sort_r[i] = red[i];
                 sort_g[i] = green[i];
                 sort_b[i] = blue[i];
+                old_r[i] = red[i];
+                old_g[i] = green[i];
+                old_b[i] = blue[i];
             }
             int k = MASK_SIZE / 2;
             sort(sort_r,sort_r+MASK_SIZE);
