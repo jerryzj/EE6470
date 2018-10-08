@@ -5,6 +5,19 @@ void Median::do_median(){
         if(i_red.num_available() > 0 && i_green.num_available() > 0 && i_blue.num_available() > 0){        
             pixel_counter = 0;
             while(i_update_index.num_available() > 0){
+                for(int j = 0; j < MASK_SIZE; j++){
+                    if(j % MASK_X == MASK_X - 1){
+                        red[j] = 0;
+                        green[j] = 0;
+                        blue[j] = 0;
+                        //continue;
+                    }
+                    else{
+                        red[j] = red[j+1];
+                        green[j] = green[j+1];
+                        blue[j] = blue[j+1];
+                    }
+                }
                 int index = i_update_index.read();
                 red_ptr = i_red.read();
                 red[index] = red_ptr;
