@@ -42,6 +42,18 @@ void Testbench::read_bmp() {
     for(y = 0; y < height; y++){
         for(x = 0; x < width; x++){
             int n = 0;
+            for(int j = 0; j < MASK_SIZE; j++){
+                if(j % MASK_X == MASK_X -1){
+                    old_r[j] = 0;
+                    old_g[j] = 0;
+                    old_b[j] = 0;
+                }
+                else{
+                    old_r[j] = filter_r[j+1];
+                    old_g[j] = filter_g[j+1];
+                    old_b[j] = filter_b[j+1];
+                }
+            }
             //set the color values in the arrays
             for(int filterY = 0; filterY < MASK_Y; filterY++){
                 for(int filterX = 0; filterX < MASK_X; filterX++){
