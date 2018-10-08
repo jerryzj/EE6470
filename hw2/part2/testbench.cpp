@@ -56,15 +56,18 @@ void Testbench::read_bmp() {
                     n++;
                 }
             }
+            pixel_counter = 0;
             for(int i = 0; i < MASK_SIZE; i++){
                 if(old_r[i] != filter_r[i]){
                     o_update_index.write(i);
                     o_red.write(filter_r[i]);
                     o_green.write(filter_g[i]);
                     o_blue.write(filter_b[i]);
-                    wait(i_blue.data_written_event());
+                    ++pixel_counter;
                 }
             }
+            cout<<"There are "<<pixel_counter<<" tranmitted"<<endl;
+            wait(i_blue.data_written_event());
         }
     }
 }
@@ -91,13 +94,30 @@ void Testbench::write_bmp() {
             if(counter == width * height && width != 0 && height != 0){
                 break;
             }
-            if(i_red.num_available() < 1){
+            if(i_green.num_available() < 1 && i_blue.num_available() < 1){
+                wait(i_green.data_written_event());
+                wait(i_blue.data_written_event());
+            }
+            else if(i_red.num_available() < 1 && i_blue.num_available() < 1){
+                wait(i_red.data_written_event());
+                wait(i_blue.data_written_event());
+            }
+            else if(i_red.num_available() < 1 && i_green.num_available() < 1){
+                wait(i_red.data_written_event());
+                wait(i_green.data_written_event());
+            }
+            else if(i_red.num_available() < 1){
                 wait(i_red.data_written_event());
             }
             else if(i_green.num_available() < 1){
                 wait(i_green.data_written_event());
             }
+            else if(i_blue.num_available() < 1){
+                wait(i_blue.data_written_event());
+            }
             else{
+                wait(i_red.data_written_event());
+                wait(i_green.data_written_event());
                 wait(i_blue.data_written_event());
             }
         }

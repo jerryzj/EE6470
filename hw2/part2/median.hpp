@@ -51,6 +51,7 @@ public:
         image_s = NULL;
         image_t = NULL;
         counter = 0;
+        pixel_counter = 0;
         SC_THREAD(write_bmp);
         SC_THREAD(read_bmp);
     }
@@ -66,6 +67,7 @@ private:
     unsigned int x, y;
     int temp_r,temp_g,temp_b;
     // shared variables
+    int pixel_counter;
     unsigned int counter;
     unsigned int   width;
     unsigned int   height;
@@ -110,6 +112,7 @@ public:
     sc_fifo_out<int> o_blue;
 
     SC_CTOR(Median) {
+        pixel_counter = 0;
         red_ptr = 0;
         green_ptr = 0;
         blue_ptr = 0;
@@ -122,6 +125,7 @@ public:
         SC_THREAD(do_median);
     }
 private:
+    int pixel_counter;
     int red_ptr;
     int green_ptr;
     int blue_ptr;
