@@ -47,7 +47,7 @@ void Testbench::read_bmp() {
                 old_g[k] = 0;
                 old_b[k] = 0;
             }
-            for(int j = 0; j < MASK_SIZE - 1; j++){
+            for(int j = 0; j < MASK_SIZE; j++){
                 if(j % MASK_X == MASK_X - 1){
                     continue;
                 }
