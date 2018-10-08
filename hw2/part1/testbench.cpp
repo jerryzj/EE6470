@@ -56,6 +56,7 @@ void Testbench::read_bmp() {
             o_red.write(filter_r);
             o_green.write(filter_g);
             o_blue.write(filter_b);
+            pixel_counter += 9;
             wait(i_blue.data_written_event());
         }
     }
@@ -127,6 +128,7 @@ void Testbench::write_bmp() {
     fwrite(image_t, sizeof(unsigned char), (size_t)(long)width * height * byte_per_pixel, fp_t);
     // close output file
     fclose(fp_t);
+    cout<<"Total pixels transmitted: "<<pixel_counter<<endl;
     cout<<"Output file generated successfully"<<endl;
     sc_stop();
 }
