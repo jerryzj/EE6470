@@ -112,7 +112,6 @@ public:
     sc_fifo_out<int> o_blue;
 
     SC_CTOR(Median) {
-        pixel_counter = 0;
         red_ptr = 0;
         green_ptr = 0;
         blue_ptr = 0;
@@ -128,7 +127,6 @@ public:
         SC_THREAD(do_median);
     }
 private:
-    int pixel_counter;
     int red_ptr;
     int green_ptr;
     int blue_ptr;

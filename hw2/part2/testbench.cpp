@@ -68,7 +68,6 @@ void Testbench::read_bmp() {
                     n++;
                 }
             }
-            pixel_counter = 0;
             for(int i = 0; i < MASK_SIZE; i++){
                 if(old_r[i] != filter_r[i] || old_g[i] != filter_g[i] || old_b[i] != filter_b[i]){
                     o_update_index.write(i);
@@ -76,12 +75,8 @@ void Testbench::read_bmp() {
                     o_green.write(filter_g[i]);
                     o_blue.write(filter_b[i]);
                     ++pixel_counter;
-                    cout<<"Index ";
-                    cout<<i<<" ";
                 }
             }
-            cout<<endl;
-            cout<<pixel_counter<< " transmitted"<<endl;
             wait(i_blue.data_written_event());
         }
     }
@@ -153,6 +148,7 @@ void Testbench::write_bmp() {
     fwrite(image_t, sizeof(unsigned char), (size_t)(long)width * height * byte_per_pixel, fp_t);
     // close output file
     fclose(fp_t);
+    cout<<"Total pixels transmitted: "<<pixel_counter<<endl;
     cout<<"Output file generated successfully"<<endl;
     sc_stop();
 }

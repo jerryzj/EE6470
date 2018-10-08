@@ -3,6 +3,7 @@
 void Median::do_median(){
     while(1){
         if(i_red.num_available() > 0 && i_green.num_available() > 0 && i_blue.num_available() > 0){        
+            // Restore from backup filter
             for(int j = 0; j < MASK_SIZE; j++){
                 if(j % MASK_X == MASK_X - 1){
                     red[j] = 0;
@@ -15,7 +16,7 @@ void Median::do_median(){
                     blue[j] = old_b[j+1];
                 }
             }
-            pixel_counter = 0;
+            // Fill pixel from FIFO
             while(i_update_index.num_available() > 0){
                 int index = i_update_index.read();
                 red_ptr = i_red.read();
@@ -24,13 +25,13 @@ void Median::do_median(){
                 green[index] = green_ptr;
                 blue_ptr = i_blue.read();
                 blue[index] = blue_ptr;
-                ++pixel_counter;
             }
-            cout<<pixel_counter<<" received"<<endl;
             for(int i = 0; i < MASK_SIZE; i++){
+                // Write pixel to sort array
                 sort_r[i] = red[i];
                 sort_g[i] = green[i];
                 sort_b[i] = blue[i];
+                // Backup pixel
                 old_r[i] = red[i];
                 old_g[i] = green[i];
                 old_b[i] = blue[i];
