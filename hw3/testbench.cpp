@@ -97,3 +97,58 @@ void Testbench::write_bmp() {
     fclose(fp_t);
     cout<<"Output file generated successfully"<<endl;
 }
+
+void Testbench::IO(){
+    word data, mask;
+    for(int y = 0; y < height; y++){
+        for(int x = 0; x < width; x++){
+            if(x == 0){  // transmit the whole filter 
+                for(int filterY = 0; filterY < MASK_Y; filterY++){
+                    for(int filterX = 0; filterX < MASK_X; filterX++){
+                        int imageX = (x - MASK_X / 2 + filterX + width) % width;
+                        int  imageY = (y - MASK_Y / 2 + filterY + height) % height;
+                        temp_r = *(image_s + byte_per_pixel * (width * imageY + imageX) + 2);
+                        temp_g = *(image_s + byte_per_pixel * (width * imageY + imageX) + 1);
+                        temp_b = *(image_s + byte_per_pixel * (width * imageY + imageX) + 0);
+                        // set data
+                        data.uc[0] = (char) temp_r;
+                        data.uc[1] = (char) temp_g;
+                        data.uc[2] = (char) temp_b;
+                        // set mask
+                        mask.uc[0] = 0xff;
+                        mask.uc[1] = 0xff;
+                        mask.uc[2] = 0xff;
+                        mask.uc[3] = 0;                        
+                        initiator.write_to_socket(MEDIAN_FILTER_R_ADDR, mask.uc, data.uc, 4);
+                    }
+                }
+            }
+            else{   // tranmit by row
+                for(int filterY = 0; filterY < MASK_Y; filterY++){
+                    int filterX = MASK_X - 1;
+                    int imageX = (x - MASK_X / 2 + filterX + width) % width;
+                    int  imageY = (y - MASK_Y / 2 + filterY + height) % height;
+                    temp_r = *(image_s + byte_per_pixel * (width * imageY + imageX) + 2);
+                    temp_g = *(image_s + byte_per_pixel * (width * imageY + imageX) + 1);
+                    temp_b = *(image_s + byte_per_pixel * (width * imageY + imageX) + 0);
+                    // set data
+                    data.uc[0] = (char) temp_r;
+                    data.uc[1] = (char) temp_g;
+                    data.uc[2] = (char) temp_b;
+                    // set mask
+                    mask.uc[0] = 0xff;
+                    mask.uc[1] = 0xff;
+                    mask.uc[2] = 0xff;
+                    mask.uc[3] = 0;                        
+                    initiator.write_to_socket(MEDIAN_FILTER_R_ADDR, mask.uc, data.uc, 4);
+                }
+            }
+            // Write result
+            initiator.read_from_socket(MEDIAN_FILTER_RESULT_ADDR, mask.uc, data.uc, 4);
+            *(image_t + byte_per_pixel * (width * y + x) + 2) = data.uc[0];
+            *(image_t + byte_per_pixel * (width * y + x) + 1) = data.uc[1];
+            *(image_t + byte_per_pixel * (width * y + x) + 0) = data.uc[2];
+        }
+    }
+    sc_stop();
+}
