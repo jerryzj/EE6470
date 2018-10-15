@@ -1,51 +1,73 @@
 #include "median.hpp"
 
+Median::Median(sc_module_name n) : sc_module(n), t_skt("t_skt"), base_offset(0) {
+    red[MASK_SIZE] = {0};
+    green[MASK_SIZE] = {0};
+    blue[MASK_SIZE] = {0};
+    sort_r[MASK_SIZE] = {0};
+    sort_g[MASK_SIZE] = {0};
+    sort_b[MASK_SIZE] = {0};
+    old_r[MASK_SIZE] = {0};
+    old_g[MASK_SIZE] = {0};
+    old_b[MASK_SIZE] = {0};
+    SC_THREAD(do_median);
+    t_skt.register_b_transport(this, &Median::blocking_transport);
+}
+
 void Median::do_median(){
-    while(1){
-        if(i_red.num_available() > 0 && i_green.num_available() > 0 && i_blue.num_available() > 0){        
-            // Restore from backup filter
-            for(int j = 0; j < MASK_SIZE; j++){
-                if(j % MASK_X == MASK_X - 1){
-                    red[j] = 0;
-                    green[j] = 0;
-                    blue[j] = 0;
-                }
-                else{
-                    red[j] = old_r[j+1];
-                    green[j] = old_g[j+1];
-                    blue[j] = old_b[j+1];
-                }
+    
+}
+
+void Median::blocking_transport(tlm::tlm_generic_payload &payload, sc_core::sc_time &delay) {
+    sc_dt::uint64 addr = payload.get_address();
+    addr = addr - base_offset;
+    unsigned char *mask_ptr = payload.get_byte_enable_ptr();
+    unsigned char *data_ptr = payload.get_data_ptr();
+    word buffer;
+    switch(payload.get_command()){
+        case tlm::TLM_READ_COMMAND:
+            switch(addr){
+                case MEDIAN_FILTER_RESULT_ADDR: 
+                    buffer.result[0] = i_red.read();
+                    buffer.result[1] = i_green.read();
+                    buffer.result[2] = i_blue.read();
+                break;
+                default:
+                    cerr<<"Error! Medium::blocking_transport: address 0x"
+                        <<std::setfill('0')<<std::setw(8)<<std::hex<<addr<<std::dec
+                        <<" is not valid"<<std::endl;
+                break;
             }
-            // Fill pixel from FIFO
-            while(i_update_index.num_available() > 0){
-                int index = i_update_index.read();
-                red_ptr = i_red.read();
-                red[index] = red_ptr;
-                green_ptr = i_green.read();
-                green[index] = green_ptr;
-                blue_ptr = i_blue.read();
-                blue[index] = blue_ptr;
+            data_ptr[0] = buffer.result[0];
+            data_ptr[1] = buffer.result[1];
+            data_ptr[2] = buffer.result[2];
+        break;
+        case tlm::TLM_WRITE_COMMAND:
+            switch(addr){
+                case MEDIAN_FILTER_R_ADDR: 
+                    if (mask_ptr[0] == 0xff){
+                        o_red.write(data_ptr[0]);
+                    }
+                    if (mask_ptr[1] == 0xff ) {
+                        o_green.write(data_ptr[1]);
+                    }
+                    if (mask_ptr[2] == 0xff ) {
+                        o_blue.write(data_ptr[2]);
+                    }
+                break;
+                default:
+                cerr<<"Error! Medium::blocking_transport: address 0x"
+                    <<std::setfill('0')<<std::setw(8)<<std::hex<<addr<<std::dec
+                    <<" is not valid"<<std::endl;
+                break;
             }
-            for(int i = 0; i < MASK_SIZE; i++){
-                // Write pixel to sort array
-                sort_r[i] = red[i];
-                sort_g[i] = green[i];
-                sort_b[i] = blue[i];
-                // Backup pixel
-                old_r[i] = red[i];
-                old_g[i] = green[i];
-                old_b[i] = blue[i];
-            }
-            int k = MASK_SIZE / 2;
-            sort(sort_r,sort_r+MASK_SIZE);
-            sort(sort_g,sort_g+MASK_SIZE);
-            sort(sort_b,sort_b+MASK_SIZE);
-            o_red.write(sort_r[k]);
-            o_green.write(sort_g[k]);
-            o_blue.write(sort_b[k]);
-        }
-        else{
-            wait(i_update_index.data_written_event());
-        }
+        break;
+        case tlm::TLM_IGNORE_COMMAND:
+            payload.set_response_status(tlm::TLM_GENERIC_ERROR_RESPONSE);
+            return;
+        default:
+            payload.set_response_status(tlm::TLM_GENERIC_ERROR_RESPONSE);
+            return;
     }
+    payload.set_response_status(tlm::TLM_OK_RESPONSE);  // Always OK
 }

@@ -1,10 +1,25 @@
 #include "median.hpp"
-#include "Initiator.hpp"
+
+
+Testbench::Testbench(sc_module_name n) : sc_module(n), initiator("initiator") {
+    x = 0;
+    y = 0;
+    temp_r = 0;
+    temp_g = 0;
+    temp_b = 0;
+    width = 0;
+    height = 0;
+    rgb_raw_data_offset = 0;
+    bit_per_pixel = 0;
+    byte_per_pixel = 0;
+    image_s = NULL;
+    image_t = NULL;
+    SC_THREAD(IO);
+}
 
 void Testbench::read_bmp() {
     // Input file name
     const char *fname_s = "lena.bmp";
-    
     FILE *fp_s = NULL;
     
     fp_s = fopen(fname_s, "rb");
@@ -39,48 +54,7 @@ void Testbench::read_bmp() {
     }
     fread(image_s, sizeof(unsigned char), (size_t)(long)width * height * byte_per_pixel, fp_s);
     fclose(fp_s); // clode file, image data now in image_s
-
-    for(y = 0; y < height; y++){
-        for(x = 0; x < width; x++){
-            int n = 0;
-            for(int k = 0; k < MASK_SIZE; k++){
-                old_r[k] = 0;
-                old_g[k] = 0;
-                old_b[k] = 0;
-            }
-            for(int j = 0; j < MASK_SIZE; j++){
-                if(j % MASK_X == MASK_X - 1){
-                    continue;
-                }
-                else{
-                    old_r[j] = filter_r[j+1];
-                    old_g[j] = filter_g[j+1];
-                    old_b[j] = filter_b[j+1];
-                }
-            }
-            //set the color values in the arrays
-            for(int filterY = 0; filterY < MASK_Y; filterY++){
-                for(int filterX = 0; filterX < MASK_X; filterX++){
-                    int imageX = (x - MASK_X / 2 + filterX + width) % width;
-                    int  imageY = (y - MASK_Y / 2 + filterY + height) % height;
-                    filter_r[n] = *(image_s + byte_per_pixel * (width * imageY + imageX) + 2);
-                    filter_g[n] = *(image_s + byte_per_pixel * (width * imageY + imageX) + 1);
-                    filter_b[n] = *(image_s + byte_per_pixel * (width * imageY + imageX) + 0);
-                    n++;
-                }
-            }
-            for(int i = 0; i < MASK_SIZE; i++){
-                if(old_r[i] != filter_r[i] || old_g[i] != filter_g[i] || old_b[i] != filter_b[i]){
-                    o_update_index.write(i);
-                    o_red.write(filter_r[i]);
-                    o_green.write(filter_g[i]);
-                    o_blue.write(filter_b[i]);
-                    ++pixel_counter;
-                }
-            }
-            wait(i_blue.data_written_event());
-        }
-    }
+    cout<<"Read input file successfully"<<endl;
 }
 
 void Testbench::write_bmp() {
@@ -88,34 +62,6 @@ void Testbench::write_bmp() {
     const char *fname_t = "lena_filtered.bmp";
     FILE *fp_t = NULL;
 
-    while(1){
-        if(i_red.num_available() > 0 && i_green.num_available() > 0 && i_blue.num_available() > 0){
-            temp_r = i_red.read();
-            temp_g = i_green.read();
-            temp_b = i_blue.read();
-            *(image_t + byte_per_pixel * (width * y + x) + 2) = temp_r;
-            *(image_t + byte_per_pixel * (width * y + x) + 1) = temp_g;
-            *(image_t + byte_per_pixel * (width * y + x) + 0) = temp_b;
-            temp_r = 0;
-            temp_g = 0;
-            temp_b = 0;
-            ++counter;
-        }
-        else{
-            if(counter == width * height && width != 0 && height != 0){
-                break;
-            }
-            if(i_red.num_available() < 1){
-                wait(i_red.data_written_event());
-            }
-            else if(i_green.num_available() < 1){
-                wait(i_green.data_written_event());
-            }
-            else{
-                wait(i_blue.data_written_event());
-            }
-        }
-    }
     fp_t = fopen(fname_t, "wb");
     if (fp_t == NULL) {
         printf("fopen fname_t error\n");
@@ -149,7 +95,5 @@ void Testbench::write_bmp() {
     fwrite(image_t, sizeof(unsigned char), (size_t)(long)width * height * byte_per_pixel, fp_t);
     // close output file
     fclose(fp_t);
-    cout<<"Total pixels transmitted: "<<pixel_counter<<endl;
     cout<<"Output file generated successfully"<<endl;
-    sc_stop();
 }

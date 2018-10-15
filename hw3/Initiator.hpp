@@ -6,6 +6,7 @@ using namespace sc_core;
 
 #include "tlm"
 #include "tlm_utils/simple_initiator_socket.h"
+#include "tlm_utils/simple_target_socket.h"
 
 class Initiator: public sc_module{
 public:

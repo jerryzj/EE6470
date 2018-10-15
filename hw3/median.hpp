@@ -7,6 +7,7 @@
 #include <string>
 #include <algorithm>
 #include <sys/time.h>
+#include <iomanip>
 using namespace std;
 
 #include <systemc>
@@ -14,61 +15,33 @@ using namespace sc_dt;
 using namespace sc_core;
 using sint = sc_int<32>;
 
+#include "Initiator.hpp"
 
 const int MASK_X = 3;
 const int MASK_Y = 3;
 const int MASK_SIZE = MASK_X * MASK_Y;
+const int MEDIAN_FILTER_R_ADDR (0x00000000);
+const int MEDIAN_FILTER_RESULT_ADDR (0x00000004);
+
+union word{
+    int sint;
+    unsigned int uint;
+    unsigned char uc[4];
+};
 
 SC_MODULE(Testbench){
 public:
-    // Read bmp outputs
-    sc_fifo_out<int> o_red;
-    sc_fifo_out<int> o_green;
-    sc_fifo_out<int> o_blue;
-    sc_fifo_out<int> o_update_index;
-    // Write bmp inputs
-    sc_fifo_in<int> i_red;
-    sc_fifo_in<int> i_green;
-    sc_fifo_in<int> i_blue;
-
-    SC_CTOR(Testbench) {
-        filter_r[MASK_SIZE] = {0};
-        filter_g[MASK_SIZE] = {0};
-        filter_b[MASK_SIZE] = {0};
-        old_r[MASK_SIZE] = {0};
-        old_g[MASK_SIZE] = {0};
-        old_b[MASK_SIZE] = {0};
-        x = 0;
-        y = 0;
-        temp_r = 0;
-        temp_g = 0;
-        temp_b = 0;
-        width = 0;
-        height = 0;
-        rgb_raw_data_offset = 0;
-        bit_per_pixel = 0;
-        byte_per_pixel = 0;
-        image_s = NULL;
-        image_t = NULL;
-        counter = 0;
-        pixel_counter = 0;
-        SC_THREAD(write_bmp);
-        SC_THREAD(read_bmp);
-    }
+    Initiator initiator;
+    void read_bmp();
+    void write_bmp();
+    Testbench(sc_module_name n);
+    ~Testbench();
+    SC_HAS_PROCESS(Testbench);
 private:
-    // read bmp
-    int filter_r[MASK_SIZE];
-    int filter_g[MASK_SIZE];
-    int filter_b[MASK_SIZE];
-    int old_r[MASK_SIZE];
-    int old_g[MASK_SIZE];
-    int old_b[MASK_SIZE];
     // write bmp
     unsigned int x, y;
     int temp_r,temp_g,temp_b;
     // shared variables
-    int pixel_counter;
-    unsigned int counter;
     unsigned int   width;
     unsigned int   height;
     unsigned int   rgb_raw_data_offset;
@@ -95,50 +68,35 @@ private:
         0, 0, 0, 0,  // used colors
         0, 0, 0, 0   // important colors
     };
-    void read_bmp();
-    void write_bmp();
+    void IO();
 };
 
 SC_MODULE(Median){
 public:
     // Inputs
-    sc_fifo_in<int> i_red;
-    sc_fifo_in<int> i_green;
-    sc_fifo_in<int> i_blue;
-    sc_fifo_in<int> i_update_index;
+    sc_fifo_in<unsigned char> i_red;
+    sc_fifo_in<unsigned char> i_green;
+    sc_fifo_in<unsigned char> i_blue;
+    sc_fifo_in<unsigned char> i_update_index;
     // Outputs
-    sc_fifo_out<int> o_red;
-    sc_fifo_out<int> o_green;
-    sc_fifo_out<int> o_blue;
-
-    SC_CTOR(Median) {
-        red_ptr = 0;
-        green_ptr = 0;
-        blue_ptr = 0;
-        red[MASK_SIZE] = {0};
-        green[MASK_SIZE] = {0};
-        blue[MASK_SIZE] = {0};
-        sort_r[MASK_SIZE] = {0};
-        sort_g[MASK_SIZE] = {0};
-        sort_b[MASK_SIZE] = {0};
-        old_r[MASK_SIZE] = {0};
-        old_g[MASK_SIZE] = {0};
-        old_b[MASK_SIZE] = {0};
-        SC_THREAD(do_median);
-    }
+    sc_fifo_out<unsigned char> o_red;
+    sc_fifo_out<unsigned char> o_green;
+    sc_fifo_out<unsigned char> o_blue;
+    tlm_utils::simple_target_socket<Median> t_skt;
+    Median(sc_module_name n);
+    ~Median();
 private:
-    int red_ptr;
-    int green_ptr;
-    int blue_ptr;
-    int red[MASK_SIZE];
-    int green[MASK_SIZE];
-    int blue[MASK_SIZE];
-    int old_r[MASK_SIZE];
-    int old_g[MASK_SIZE];
-    int old_b[MASK_SIZE];
-    int sort_r[MASK_SIZE];
-    int sort_g[MASK_SIZE];
-    int sort_b[MASK_SIZE];
+    unsigned char red[MASK_SIZE];
+    unsigned char green[MASK_SIZE];
+    unsigned char blue[MASK_SIZE];
+    unsigned char old_r[MASK_SIZE];
+    unsigned char old_g[MASK_SIZE];
+    unsigned char old_b[MASK_SIZE];
+    unsigned char sort_r[MASK_SIZE];
+    unsigned char sort_g[MASK_SIZE];
+    unsigned char sort_b[MASK_SIZE];
+    unsigned int base_offset;
     void do_median();
+    void blocking_transport(tlm::tlm_generic_payload &payload, sc_core::sc_time &delay);
 };
 #endif
