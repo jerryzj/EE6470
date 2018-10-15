@@ -1,4 +1,5 @@
 #include "median.hpp"
+#include "Initiator.hpp"
 
 void Testbench::read_bmp() {
     // Input file name

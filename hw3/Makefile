@@ -36,7 +36,7 @@ LIB_DIRS += -L$(SYSTEMC_HOME)/$(SYSTEMC_LIB)
 ### Definitions ###
 executives=median
 output=lena_filtered.bmp
-sources= main.cpp median.cpp testbench.cpp
+sources= main.cpp median.cpp testbench.cpp Initiator.cpp
 objects= $(subst .cpp,.o,$(sources))
 dependencies= $(subst .cpp,.d,$(sources))
 	
