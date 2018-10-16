@@ -13,10 +13,8 @@ using namespace std;
 #include <systemc>
 using namespace sc_dt;
 using namespace sc_core;
-using sint = sc_int<32>;
 
 #include "Initiator.hpp"
-
 const int MASK_X = 3;
 const int MASK_Y = 3;
 const int MASK_SIZE = MASK_X * MASK_Y;
@@ -78,7 +76,7 @@ public:
     sc_fifo_in<unsigned char> i_red;
     sc_fifo_in<unsigned char> i_green;
     sc_fifo_in<unsigned char> i_blue;
-    sc_fifo_in<unsigned char> i_update_index;
+    //sc_fifo_in<unsigned char> i_update_index;
     // Outputs
     sc_fifo_out<unsigned char> o_red;
     sc_fifo_out<unsigned char> o_green;
