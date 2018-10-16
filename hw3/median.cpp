@@ -4,9 +4,6 @@ Median::Median(sc_module_name n) : sc_module(n), t_skt("t_skt"), base_offset(0) 
     red[MASK_SIZE] = {0};
     green[MASK_SIZE] = {0};
     blue[MASK_SIZE] = {0};
-    sort_r[MASK_SIZE] = {0};
-    sort_g[MASK_SIZE] = {0};
-    sort_b[MASK_SIZE] = {0};
     old_r[MASK_SIZE] = {0};
     old_g[MASK_SIZE] = {0};
     old_b[MASK_SIZE] = {0};
@@ -15,7 +12,43 @@ Median::Median(sc_module_name n) : sc_module(n), t_skt("t_skt"), base_offset(0) 
 }
 
 void Median::do_median(){
-    
+    for(int y = 0;  y < height; y++){
+        for(int x = 0; x < width; x++){
+            if(x == 0){ // Update the whole filter
+                for(int j = 0; j < MASK_Y; j++){
+                    for(int i = 0; i < MASK_X; i++){
+                        old_r[j * MASK_X + i] = i_red.read();
+                        old_g[j * MASK_X + i] = i_green.read();
+                        old_b[j * MASK_X + i] = i_blue.read();
+                    }
+                }
+            }
+            else{       // Update row only
+                for(int j = 0; j < MASK_Y; j++){
+                    for(int i = 0; i < MASK_X - 1; i++){
+                        old_r[j * MASK_X + i] = old_r[j * MASK_X + (i+1)];
+                        old_g[j * MASK_X + i] = old_g[j * MASK_X + (i+1)];
+                        old_b[j * MASK_X + i] = old_b[j * MASK_X + (i+1)];
+                    }
+                    old_r[j * MASK_X + MASK_X-1] = i_red.read();
+                    old_g[j * MASK_X + MASK_X-1] = i_green.read();
+                    old_b[j * MASK_X + MASK_X-1] = i_blue.read();
+                }
+            }
+            for(int i = 0; i < MASK_SIZE; i++){ // restore 
+                red[i] = old_r[i];
+                green[i] = old_g[i];
+                blue[i] = old_b[i];
+            }
+            int k = MASK_SIZE / 2;
+            sort(red, red + MASK_SIZE);
+            sort(green, green + MASK_SIZE);
+            sort(blue, blue + MASK_SIZE);
+            o_red.write(red[k]);
+            o_green.write(green[k]);
+            o_blue.write(blue[k]);
+        }
+    }
 }
 
 void Median::blocking_transport(tlm::tlm_generic_payload &payload, sc_core::sc_time &delay) {
@@ -28,9 +61,9 @@ void Median::blocking_transport(tlm::tlm_generic_payload &payload, sc_core::sc_t
         case tlm::TLM_READ_COMMAND:
             switch(addr){
                 case MEDIAN_FILTER_RESULT_ADDR: 
-                    buffer.result[0] = i_red.read();
-                    buffer.result[1] = i_green.read();
-                    buffer.result[2] = i_blue.read();
+                    buffer.uc[0] = i_red.read();
+                    buffer.uc[1] = i_green.read();
+                    buffer.uc[2] = i_blue.read();
                 break;
                 default:
                     cerr<<"Error! Medium::blocking_transport: address 0x"
@@ -38,9 +71,9 @@ void Median::blocking_transport(tlm::tlm_generic_payload &payload, sc_core::sc_t
                         <<" is not valid"<<std::endl;
                 break;
             }
-            data_ptr[0] = buffer.result[0];
-            data_ptr[1] = buffer.result[1];
-            data_ptr[2] = buffer.result[2];
+            data_ptr[0] = buffer.uc[0];
+            data_ptr[1] = buffer.uc[1];
+            data_ptr[2] = buffer.uc[2];
         break;
         case tlm::TLM_WRITE_COMMAND:
             switch(addr){
@@ -70,4 +103,9 @@ void Median::blocking_transport(tlm::tlm_generic_payload &payload, sc_core::sc_t
             return;
     }
     payload.set_response_status(tlm::TLM_OK_RESPONSE);  // Always OK
+}
+
+void Median::set_h_w(int h, int w){
+    height = h;
+    width = w;
 }

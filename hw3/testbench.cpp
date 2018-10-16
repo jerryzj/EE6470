@@ -152,3 +152,11 @@ void Testbench::IO(){
     }
     sc_stop();
 }
+
+int Testbench::get_width(){
+    return width;
+}
+
+int Testbench::get_height(){
+    return height;
+}
