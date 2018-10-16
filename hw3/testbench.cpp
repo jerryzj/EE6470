@@ -1,6 +1,5 @@
 #include "median.hpp"
 
-
 Testbench::Testbench(sc_module_name n) : sc_module(n), initiator("initiator") {
     x = 0;
     y = 0;
