@@ -12,8 +12,8 @@ Median::Median(sc_module_name n) : sc_module(n), t_skt("t_skt"), base_offset(0) 
 }
 
 void Median::do_median(){
-    for(int y = 0;  y < height; y++){
-        for(int x = 0; x < width; x++){
+    for(unsigned int y = 0;  y < height; y++){
+        for(unsigned int x = 0; x < width; x++){
             if(x == 0){ // Update the whole filter
                 for(int j = 0; j < MASK_Y; j++){
                     for(int i = 0; i < MASK_X; i++){
