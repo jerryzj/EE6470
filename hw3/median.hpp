@@ -87,6 +87,7 @@ public:
     tlm_utils::simple_target_socket<Median> t_skt;
     // Parameter setup
     void set_h_w(int h, int w);
+    SC_HAS_PROCESS(Median);
     Median(sc_module_name n);
     ~Median();
 private:
