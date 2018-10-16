@@ -39,6 +39,7 @@ private:
     unsigned int x, y;
     int temp_r,temp_g,temp_b;
     // shared variables
+    unsigned int pixel_counter;
     unsigned int   width;
     unsigned int   height;
     unsigned int   rgb_raw_data_offset;

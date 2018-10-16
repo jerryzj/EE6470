@@ -12,6 +12,7 @@ Testbench::Testbench(sc_module_name n) : sc_module(n), initiator("initiator") {
     rgb_raw_data_offset = 0;
     bit_per_pixel = 0;
     byte_per_pixel = 0;
+    pixel_counter = 0;
     image_s = NULL;
     image_t = NULL;
     SC_THREAD(IO);
@@ -95,6 +96,7 @@ void Testbench::write_bmp() {
     fwrite(image_t, sizeof(unsigned char), (size_t)(long)width * height * byte_per_pixel, fp_t);
     // close output file
     fclose(fp_t);
+    cout<<"Total pixels transmitted: "<<pixel_counter<<endl;
     cout<<"Output file generated successfully"<<endl;
 }
 
@@ -118,7 +120,8 @@ void Testbench::IO(){
                         mask.uc[0] = 0xff;
                         mask.uc[1] = 0xff;
                         mask.uc[2] = 0xff;
-                        mask.uc[3] = 0;                        
+                        mask.uc[3] = 0; 
+                        pixel_counter += 3;                       
                         initiator.write_to_socket(MEDIAN_FILTER_R_ADDR, mask.uc, data.uc, 4);
                     }
                 }
@@ -139,7 +142,8 @@ void Testbench::IO(){
                     mask.uc[0] = 0xff;
                     mask.uc[1] = 0xff;
                     mask.uc[2] = 0xff;
-                    mask.uc[3] = 0;                        
+                    mask.uc[3] = 0;
+                    pixel_counter += 3;                        
                     initiator.write_to_socket(MEDIAN_FILTER_R_ADDR, mask.uc, data.uc, 4);
                 }
             }
