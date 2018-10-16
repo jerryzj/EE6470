@@ -73,14 +73,13 @@ private:
 SC_MODULE(Median){
 public:
     // Inputs
-    sc_fifo_in<unsigned char> i_red;
-    sc_fifo_in<unsigned char> i_green;
-    sc_fifo_in<unsigned char> i_blue;
-    //sc_fifo_in<unsigned char> i_update_index;
+    sc_fifo<unsigned char> i_red;
+    sc_fifo<unsigned char> i_green;
+    sc_fifo<unsigned char> i_blue;
     // Outputs
-    sc_fifo_out<unsigned char> o_red;
-    sc_fifo_out<unsigned char> o_green;
-    sc_fifo_out<unsigned char> o_blue;
+    sc_fifo<unsigned char> o_red;
+    sc_fifo<unsigned char> o_green;
+    sc_fifo<unsigned char> o_blue;
     tlm_utils::simple_target_socket<Median> t_skt;
     // Parameter setup
     void set_h_w(unsigned int h, unsigned int w);
