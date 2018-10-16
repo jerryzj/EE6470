@@ -132,9 +132,9 @@ void Testbench::IO(){
                     temp_g = *(image_s + byte_per_pixel * (width * imageY + imageX) + 1);
                     temp_b = *(image_s + byte_per_pixel * (width * imageY + imageX) + 0);
                     // set data
-                    data.uc[0] = (char) temp_r;
-                    data.uc[1] = (char) temp_g;
-                    data.uc[2] = (char) temp_b;
+                    data.uc[0] = temp_r;
+                    data.uc[1] = temp_g;
+                    data.uc[2] = temp_b;
                     // set mask
                     mask.uc[0] = 0xff;
                     mask.uc[1] = 0xff;

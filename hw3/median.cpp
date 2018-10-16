@@ -61,9 +61,9 @@ void Median::blocking_transport(tlm::tlm_generic_payload &payload, sc_core::sc_t
         case tlm::TLM_READ_COMMAND:
             switch(addr){
                 case MEDIAN_FILTER_RESULT_ADDR: 
-                    buffer.uc[0] = i_red.read();
-                    buffer.uc[1] = i_green.read();
-                    buffer.uc[2] = i_blue.read();
+                    buffer.uc[0] = o_red.read();
+                    buffer.uc[1] = o_green.read();
+                    buffer.uc[2] = o_blue.read();
                 break;
                 default:
                     cerr<<"Error! Medium::blocking_transport: address 0x"
@@ -79,13 +79,13 @@ void Median::blocking_transport(tlm::tlm_generic_payload &payload, sc_core::sc_t
             switch(addr){
                 case MEDIAN_FILTER_R_ADDR: 
                     if (mask_ptr[0] == 0xff){
-                        o_red.write(data_ptr[0]);
+                        i_red.write(data_ptr[0]);
                     }
                     if (mask_ptr[1] == 0xff ) {
-                        o_green.write(data_ptr[1]);
+                        i_green.write(data_ptr[1]);
                     }
                     if (mask_ptr[2] == 0xff ) {
-                        o_blue.write(data_ptr[2]);
+                        i_blue.write(data_ptr[2]);
                     }
                 break;
                 default:
