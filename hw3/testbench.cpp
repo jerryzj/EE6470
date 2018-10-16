@@ -100,8 +100,8 @@ void Testbench::write_bmp() {
 
 void Testbench::IO(){
     word data, mask;
-    for(int y = 0; y < height; y++){
-        for(int x = 0; x < width; x++){
+    for(unsigned int y = 0; y < height; y++){
+        for(unsigned int x = 0; x < width; x++){
             if(x == 0){  // transmit the whole filter 
                 for(int filterY = 0; filterY < MASK_Y; filterY++){
                     for(int filterX = 0; filterX < MASK_X; filterX++){
@@ -153,10 +153,10 @@ void Testbench::IO(){
     sc_stop();
 }
 
-int Testbench::get_width(){
+unsigned int Testbench::get_width(){
     return width;
 }
 
-int Testbench::get_height(){
+unsigned int Testbench::get_height(){
     return height;
 }

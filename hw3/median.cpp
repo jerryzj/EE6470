@@ -105,7 +105,7 @@ void Median::blocking_transport(tlm::tlm_generic_payload &payload, sc_core::sc_t
     payload.set_response_status(tlm::TLM_OK_RESPONSE);  // Always OK
 }
 
-void Median::set_h_w(int h, int w){
+void Median::set_h_w(unsigned int h, unsigned int w){
     height = h;
     width = w;
 }

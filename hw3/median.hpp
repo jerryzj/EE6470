@@ -34,10 +34,9 @@ public:
     Initiator initiator;
     void read_bmp();
     void write_bmp();
-    int get_width();
-    int get_height();
+    unsigned int get_width();
+    unsigned int get_height();
     Testbench(sc_module_name n);
-    ~Testbench();
     SC_HAS_PROCESS(Testbench);
 private:
     // write bmp
@@ -86,10 +85,9 @@ public:
     sc_fifo_out<unsigned char> o_blue;
     tlm_utils::simple_target_socket<Median> t_skt;
     // Parameter setup
-    void set_h_w(int h, int w);
+    void set_h_w(unsigned int h, unsigned int w);
     SC_HAS_PROCESS(Median);
     Median(sc_module_name n);
-    ~Median();
 private:
     unsigned char red[MASK_SIZE];
     unsigned char green[MASK_SIZE];
@@ -98,8 +96,8 @@ private:
     unsigned char old_g[MASK_SIZE];
     unsigned char old_b[MASK_SIZE];
     unsigned int base_offset;
-    int width;
-    int height;
+    unsigned int width;
+    unsigned int height;
     void do_median();
     void blocking_transport(tlm::tlm_generic_payload &payload, sc_core::sc_time &delay);
 };
