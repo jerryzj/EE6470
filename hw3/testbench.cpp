@@ -121,7 +121,7 @@ void Testbench::IO(){
                         mask.uc[1] = 0xff;
                         mask.uc[2] = 0xff;
                         mask.uc[3] = 0; 
-                        pixel_counter += 3;                       
+                        pixel_counter ++;                       
                         initiator.write_to_socket(MEDIAN_FILTER_R_ADDR, mask.uc, data.uc, 4);
                     }
                 }
@@ -143,7 +143,7 @@ void Testbench::IO(){
                     mask.uc[1] = 0xff;
                     mask.uc[2] = 0xff;
                     mask.uc[3] = 0;
-                    pixel_counter += 3;                        
+                    pixel_counter ++;                        
                     initiator.write_to_socket(MEDIAN_FILTER_R_ADDR, mask.uc, data.uc, 4);
                 }
             }
