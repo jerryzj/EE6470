@@ -21,9 +21,7 @@ const int MASK_SIZE = MASK_X * MASK_Y;
 const int MEDIAN_FILTER_R_ADDR (0x00000000);
 const int MEDIAN_FILTER_RESULT_ADDR (0x00000004);
 
-union word{
-    int sint;
-    unsigned int uint;
+struct word{
     unsigned char uc[4];
 };
 

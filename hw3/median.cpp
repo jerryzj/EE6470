@@ -35,7 +35,7 @@ void Median::do_median(){
                     old_b[j * MASK_X + MASK_X-1] = i_blue.read();
                 }
             }
-            for(int i = 0; i < MASK_SIZE; i++){ // restore 
+            for(int i = 0; i < MASK_SIZE; i++){ // restore data
                 red[i] = old_r[i];
                 green[i] = old_g[i];
                 blue[i] = old_b[i];
@@ -66,7 +66,7 @@ void Median::blocking_transport(tlm::tlm_generic_payload &payload, sc_core::sc_t
                     buffer.uc[2] = o_blue.read();
                 break;
                 default:
-                    cerr<<"Error! Medium::blocking_transport: address 0x"
+                    cerr<<"Error! Median::blocking_transport: address 0x"
                         <<std::setfill('0')<<std::setw(8)<<std::hex<<addr<<std::dec
                         <<" is not valid"<<std::endl;
                 break;
@@ -89,7 +89,7 @@ void Median::blocking_transport(tlm::tlm_generic_payload &payload, sc_core::sc_t
                     }
                 break;
                 default:
-                cerr<<"Error! Medium::blocking_transport: address 0x"
+                cerr<<"Error! Median::blocking_transport: address 0x"
                     <<std::setfill('0')<<std::setw(8)<<std::hex<<addr<<std::dec
                     <<" is not valid"<<std::endl;
                 break;
