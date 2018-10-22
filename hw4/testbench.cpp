@@ -148,7 +148,7 @@ void Testbench::IO(){
                 }
             }
             // Write result
-            initiator.read_from_socket(MEDIAN_FILTER_RESULT_ADDR, mask.uc, data.uc, 4);
+            initiator.read_from_socket(SOBEL_MM_BASE+MEDIAN_FILTER_RESULT_ADDR, mask.uc, data.uc, 4);
             *(image_t + byte_per_pixel * (width * y + x) + 2) = data.uc[0];
             *(image_t + byte_per_pixel * (width * y + x) + 1) = data.uc[1];
             *(image_t + byte_per_pixel * (width * y + x) + 0) = data.uc[2];
