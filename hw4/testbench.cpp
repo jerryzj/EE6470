@@ -1,5 +1,4 @@
 #include "median.hpp"
-#include "memory_map.h"
 
 Testbench::Testbench(sc_module_name n) : sc_module(n), initiator("initiator") {
     x = 0;

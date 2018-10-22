@@ -7,7 +7,6 @@
 #include "tlm_utils/simple_initiator_socket.h"
 
 #include "MemoryMap.h"
-//#include "tlm_log.h"
 #define DMI_DEBUG 0
 
 template <int NR_OF_TARGET_SOCKETS, int NR_OF_INITIATOR_SOCKETS>

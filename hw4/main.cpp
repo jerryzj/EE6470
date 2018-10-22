@@ -1,5 +1,4 @@
 #include "median.hpp"
-#include "memory_map.h"
 #include "SimpleBus.h"
 int sc_main(int argc, char **argv){
     Testbench test("test");
