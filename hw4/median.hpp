@@ -21,9 +21,9 @@ const int MASK_SIZE = MASK_X * MASK_Y;
 const int MEDIAN_FILTER_R_ADDR (0x00000000);
 const int MEDIAN_FILTER_RESULT_ADDR (0x00000004);
 
-#define SOBEL_MM_BASE (0x90000000)
-#define SOBEL_MM_SIZE (0x00000008)
-#define SOBEL_MM_MASK (0x00000007)
+const int SOBEL_MM_BASE = 0x90000000;
+const int SOBEL_MM_SIZE = 0x00000008;
+const int SOBEL_MM_MASK = 0x00000007;
 
 struct word{
     unsigned char uc[4];
