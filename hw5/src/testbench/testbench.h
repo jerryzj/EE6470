@@ -37,18 +37,20 @@ public:
 
 	Testbench(const sc_module_name &name);
 	~Testbench() {}
-
-private:
-	/* Main thread */
-	void Test_Thread();
-
-	void GenTestData(float* data, uint data_num);
 	void LoadTestData(uint address, float* data, uint data_num);
 	void GetResult(uint address, float* data, uint data_num);
 	void ConfigPoolDMA(vector<DmaChConfig> &config);
 	void ConfigPoolEngine(PoolConfig &config);
 	void PrintData(float* data, uint channel, uint height, uint width);
 
+private:
+	/* Main thread */
+	void Test_Thread();
+
+	void GenTestData(float* data, uint data_num);
+	
 	/* Bus timing model */
 	uint AccessTime(float data_length_in_bytes);
 };
+
+Testbench *testbench_ptr = NULL;
