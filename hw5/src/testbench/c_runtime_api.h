@@ -43,7 +43,7 @@
 #endif
 
 // TVM Runtime is DLPack compatible.
-#include <dlpack.h>
+#include "dlpack.h"
 
 #ifdef __cplusplus
 extern "C" {
