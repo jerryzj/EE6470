@@ -182,7 +182,7 @@ void pool2d(TVMValue stack_value, int arg_num) {
     //Get result from RAM through debug transport (no timing effort)
     testbench.GetResult(GLOBAL_BUFFER_ADDRESS, &output_ptr[Oidx], result_num);
     cout<<"====Debug==="<<endl;
-    cout<<"Data input channel = "<<c<<endl;
+    cout<<"Data output channel = "<<c<<endl;
     printTensor(decomposed, &data_ptr[Oidx]);
   }
   if (print_data) {
