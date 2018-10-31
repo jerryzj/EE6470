@@ -146,6 +146,8 @@ void pool2d(TVMValue stack_value, int arg_num) {
                      * pool_config.data_cube_in_height
                      * pool_config.data_cube_in_width);
 
+  cout<<"====Debug===="<<endl;
+  cout<<"test_data_num"<<test_data_num<<endl;
   uint result_num(pool_config.data_cube_out_channel
                   * pool_config.data_cube_out_height
                   * pool_config.data_cube_out_width);
