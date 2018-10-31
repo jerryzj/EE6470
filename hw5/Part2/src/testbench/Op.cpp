@@ -157,7 +157,7 @@ void pool2d(TVMValue stack_value, int arg_num) {
     const auto Oidx = output_shape.Idx(c * output_shape.c/4, 0, 0);
     cout<<"====Debug==="<<endl;
     cout<<"Data input channel = "<<c<<endl;
-    printTensor(decomposed, &data_ptr[Iidx]);
+    printTensor(decomposed, &data_ptr[Iidx], c);
     // Load Test Data from DRAM to GLOBAL BUFFER
     testbench.LoadTestData(GLOBAL_BUFFER_ADDRESS, &data_ptr[Iidx], test_data_num);
     // Configure DMA to load test data into Pooling Engine 
