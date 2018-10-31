@@ -52,5 +52,3 @@ private:
 	/* Bus timing model */
 	uint AccessTime(float data_length_in_bytes);
 };
-
-Testbench *testbench_ptr = NULL;

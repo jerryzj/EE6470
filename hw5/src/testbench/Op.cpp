@@ -12,6 +12,8 @@
 #include "testbench/testbench.h"
 #include "acc_platform/acc_platform.h"
 
+extern Testbench testbench;
+
 void conv2d(TVMValue stack_value, int arg_num) {
   assert(arg_num == 3);
   // input data
@@ -149,7 +151,7 @@ void pool2d(TVMValue stack_value, int arg_num) {
   uint result_num(pool_config.data_cube_out_channel
                   * pool_config.data_cube_out_height
                   * pool_config.data_cube_out_width);
-  testbench_ptr->LoadTestData(GLOBAL_BUFFER_ADDRESS, data_ptr, test_data_num);
+  testbench.LoadTestData(GLOBAL_BUFFER_ADDRESS, data_ptr, test_data_num);
   /* Configure DMA to load test data into buffer from RAM */
   vector<DmaChConfig> dma_config(1);
   dma_config[0].channel_enable  = 1;
@@ -159,10 +161,10 @@ void pool2d(TVMValue stack_value, int arg_num) {
   dma_config[0].transfer_type   = 3;
   dma_config[0].line_length     = 0;
   dma_config[0].line_stride     = 0;
-  testbench_ptr->ConfigPoolDMA(dma_config);
+  testbench.ConfigPoolDMA(dma_config);
   
   /* Configure pooling engine to process test data */
-  testbench_ptr->ConfigPoolEngine(pool_config);
+  testbench.ConfigPoolEngine(pool_config);
 
   /* Configure DMA to move results from buffer into RAM */
   dma_config[0].channel_enable  = 1;
@@ -172,10 +174,10 @@ void pool2d(TVMValue stack_value, int arg_num) {
   dma_config[0].transfer_type   = 3;
   dma_config[0].line_length     = 0;
   dma_config[0].line_stride     = 0;
-  testbench_ptr->ConfigPoolDMA(dma_config);
+  testbench.ConfigPoolDMA(dma_config);
 
   /* Get result from RAM through debug transport (no timing effort) */
-  testbench_ptr->GetResult(GLOBAL_BUFFER_ADDRESS, output_ptr, result_num);
+  testbench.GetResult(GLOBAL_BUFFER_ADDRESS, output_ptr, result_num);
 
   if (print_data) {
     // In this example, only prints the first channel
