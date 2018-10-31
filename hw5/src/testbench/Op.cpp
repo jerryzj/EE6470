@@ -153,7 +153,7 @@ void pool2d(TVMValue stack_value, int arg_num) {
                   * pool_config.data_cube_out_width);
   testbench.LoadTestData(GLOBAL_BUFFER_ADDRESS, data_ptr, test_data_num);
   testbench.GetResult(GLOBAL_BUFFER_ADDRESS, output_ptr, result_num);
-  printTensor(output_shape, output_ptr, 0);
+  printTensor(test_data_num, output_ptr, 0);
   
   /* Configure DMA to load test data into buffer from RAM */
   vector<DmaChConfig> dma_config(1);
