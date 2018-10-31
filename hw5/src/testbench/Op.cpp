@@ -150,6 +150,11 @@ void pool2d(TVMValue stack_value, int arg_num) {
                   * pool_config.data_cube_out_height
                   * pool_config.data_cube_out_width);
   testbench.LoadTestData(GLOBAL_BUFFER_ADDRESS, data_ptr, test_data_num);
+  testbench.GetResult(GLOBAL_BUFFER_ADDRESS, output_ptr, result_num);
+  testbench.PrintData(output_ptr,  
+	          pool_config.data_cube_out_channel,
+	          pool_config.data_cube_out_height,
+	          pool_config.data_cube_out_width);
   /* Configure DMA to load test data into buffer from RAM */
   vector<DmaChConfig> dma_config(1);
   dma_config[0].channel_enable  = 1;
