@@ -119,6 +119,7 @@ void pool2d(TVMValue stack_value, int arg_num) {
     std::cout << "output size: " <<  output_shape.to_str() << "\n";
     std::cout << "\t";
     std::cout << "stride: " << stride << "\n";
+    std::cout << "Decomposed channel size "<< data_shape.c/4 << "\n";
   }
   /* ==== Run Pooling Engine on SystemC SCML platform ==== */
   // Set Pooling engine
@@ -181,9 +182,6 @@ void pool2d(TVMValue stack_value, int arg_num) {
     testbench.ConfigPoolDMA(dma_config);
     //Get result from RAM through debug transport (no timing effort)
     testbench.GetResult(GLOBAL_BUFFER_ADDRESS, &output_ptr[Oidx], result_num);
-    cout<<"====Debug==="<<endl;
-    cout<<"Data output channel = "<<c<<endl;
-    printTensor(decomposed, &data_ptr[Oidx]);
   }
   if (print_data) {
     // In this example, only prints the first channel
