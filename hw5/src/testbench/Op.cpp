@@ -3,14 +3,12 @@
 #include <cassert>
 #include <iostream>
 
+#include "testbench/testbench.h"
+#include "acc_platform/acc_platform.h"
 #include "Op.h"
 #include "OpUtil.h"
 #include "ShapeTy.h"
 #include "Config.h"
-
-
-#include "testbench/testbench.h"
-#include "acc_platform/acc_platform.h"
 
 extern Testbench testbench;
 
