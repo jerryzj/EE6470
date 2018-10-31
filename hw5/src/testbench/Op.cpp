@@ -185,7 +185,6 @@ void pool2d(TVMValue stack_value, int arg_num) {
     std::cout << "Output: " << "\n";
     printTensor(output_shape, output_ptr, 0);
   }
-
 }
 
 // proforms AX+B, where A is the input
