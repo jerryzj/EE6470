@@ -153,7 +153,7 @@ void pool2d(TVMValue stack_value, int arg_num) {
   vector<DmaChConfig> dma_config(1);
   for(unsigned int c = 0; c < 4; c++){
     ShapeTy decomposed = ShapeTy(1, data_shape.c/4, data_shape.h, data_shape.w);
-    const auto Iidx = data_shape.Idx(c * data_shape.c/4, data_shape.h, data_shape.w);
+    const auto Iidx = data_shape.Idx(c * data_shape.c/4, 0, 0);
     const auto Oidx = output_shape.Idx(c * output_shape.c/4, 0, 0);
     cout<<"====Debug==="<<endl;
     cout<<"Data input channel = "<<c<<endl;
@@ -186,9 +186,9 @@ void pool2d(TVMValue stack_value, int arg_num) {
   if (print_data) {
     // In this example, only prints the first channel
     std::cout << "Input: " << "\n";
-    printTensor(data_shape, data_ptr, 0);
+    printTensor(data_shape, data_ptr);
     std::cout << "Output: " << "\n";
-    printTensor(output_shape, output_ptr, 0);
+    printTensor(output_shape, output_ptr);
   }
 }
 
