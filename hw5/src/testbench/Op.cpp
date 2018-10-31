@@ -146,16 +146,10 @@ void pool2d(TVMValue stack_value, int arg_num) {
                      * pool_config.data_cube_in_height
                      * pool_config.data_cube_in_width);
 
-  cout<<"====Debug===="<<endl;
-  cout<<"test_data_num"<<test_data_num<<endl;
   uint result_num(pool_config.data_cube_out_channel
                   * pool_config.data_cube_out_height
                   * pool_config.data_cube_out_width);
   testbench.LoadTestData(GLOBAL_BUFFER_ADDRESS, data_ptr, test_data_num);
-  // Debug : test data in global buffer
-  testbench.GetResult(GLOBAL_BUFFER_ADDRESS, data_ptr, result_num);
-  cout<<"Data in Global Buffer"<<endl;
-  printTensor(data_shape, data_ptr, 0);
 
   /* Configure DMA to load test data into buffer from RAM */
   vector<DmaChConfig> dma_config(1);
@@ -167,19 +161,6 @@ void pool2d(TVMValue stack_value, int arg_num) {
   dma_config[0].line_length     = 0;
   dma_config[0].line_stride     = 0;
   testbench.ConfigPoolDMA(dma_config);
-  
-  // Debug : Check DMA Functionality
-  dma_config[0].channel_enable  = 1;
-  dma_config[0].source_address  = pool_config.data_in_address;
-  dma_config[0].dest_address    = GLOBAL_BUFFER_ADDRESS;
-  dma_config[0].transfer_length = test_data_num * sizeof(float);
-  dma_config[0].transfer_type   = 3;
-  dma_config[0].line_length     = 0;
-  dma_config[0].line_stride     = 0;
-  testbench.ConfigPoolDMA(dma_config);
-  testbench.GetResult(GLOBAL_BUFFER_ADDRESS, data_ptr, result_num);
-  cout<<"Data in Global Buffer"<<endl;
-  printTensor(data_shape, data_ptr, 0);
 
   /* Configure pooling engine to process test data */
   testbench.ConfigPoolEngine(pool_config);
