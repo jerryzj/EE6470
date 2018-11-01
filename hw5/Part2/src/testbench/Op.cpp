@@ -134,7 +134,7 @@ void pool2d(TVMValue stack_value, int arg_num) {
   pool_config.zero_padding          = 0;
   pool_config.data_cube_out_width   = output_shape.w;
   pool_config.data_cube_out_height  = output_shape.h;
-  pool_config.data_cube_out_channel = output_shape.c/4;
+  pool_config.data_cube_out_channel = output_shape.c/4;  // Decompose image
   pool_config.data_in_address       = POOL_BUFFER_ADDRESS;
   pool_config.data_out_address      = POOL_BUFFER_ADDRESS
                                       + (pool_config.data_cube_in_channel
@@ -149,15 +149,11 @@ void pool2d(TVMValue stack_value, int arg_num) {
   uint result_num(pool_config.data_cube_out_channel
                   * pool_config.data_cube_out_height
                   * pool_config.data_cube_out_width);
-  
   vector<DmaChConfig> dma_config(1);
   for(unsigned int c = 0; c < 4; c++){
     ShapeTy decomposed = ShapeTy(1, data_shape.c/4, data_shape.h, data_shape.w);
     const auto Iidx = data_shape.Idx(c * data_shape.c/4, 0, 0);
     const auto Oidx = output_shape.Idx(c * output_shape.c/4, 0, 0);
-    cout<<"====Debug==="<<endl;
-    cout<<"Data input channel = "<<c<<endl;
-    printTensor(decomposed, &data_ptr[Iidx], c);
     // Load Test Data from DRAM to GLOBAL BUFFER
     testbench.LoadTestData(GLOBAL_BUFFER_ADDRESS, &data_ptr[Iidx], test_data_num);
     // Configure DMA to load test data into Pooling Engine 
@@ -186,9 +182,9 @@ void pool2d(TVMValue stack_value, int arg_num) {
   if (print_data) {
     // In this example, only prints the first channel
     std::cout << "Input: " << "\n";
-    printTensor(data_shape, data_ptr);
+    printTensor(data_shape, data_ptr, 0);
     std::cout << "Output: " << "\n";
-    printTensor(output_shape, output_ptr);
+    printTensor(output_shape, output_ptr, 0);
   }
 }
 
