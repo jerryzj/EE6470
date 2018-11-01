@@ -119,6 +119,7 @@ void pool2d(TVMValue stack_value, int arg_num) {
     std::cout << "output size: " <<  output_shape.to_str() << "\n";
     std::cout << "\t";
     std::cout << "stride: " << stride << "\n";
+    std::cout << "\t";
     std::cout << "Decomposed channel size "<< data_shape.c/4 << "\n";
   }
   /* ==== Run Pooling Engine on SystemC SCML platform ==== */
