@@ -75,11 +75,11 @@ for(unsigned int c = 0; c < 4; c++){
 
 Part I
 
-![img1](./assets/螢幕快照 2018-11-01 11.35.14.png)
+![Imgur](https://i.imgur.com/TGN32JQ.png)
 
 Part II
 
-![img2](./assets/螢幕快照 2018-11-01 11.36.04.png)
+![Imgur](https://i.imgur.com/KoN6wyg.png)
 
 ## Conclusion & Discussion
 
