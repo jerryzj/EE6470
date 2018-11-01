@@ -75,7 +75,7 @@ for(unsigned int c = 0; c < 4; c++){
 
 Part I
 
-![img1](/assets/螢幕快照 2018-11-01 11.35.14.png)
+![img1](https://github.com/jerryzj/EE6470/raw/master/assets/螢幕快照 2018-11-01 11.35.14.png)
 
 Part II
 
