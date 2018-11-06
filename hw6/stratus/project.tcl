@@ -51,8 +51,8 @@ define_system_module ../System.cpp
 define_hls_module Pooling ../Pooling.cpp
 
 ### 4. Define your HLS configuration (arbitrary names, BASIC and DPA in this example). 
-define_hls_config SobelFilter BASIC
-define_hls_config SobelFilter DPA       --dpopt_auto=op,expr
+define_hls_config Pooling BASIC
+define_hls_config Pooling DPA       --dpopt_auto=op,expr
 
 set IMAGE_DIR           ".."
 
