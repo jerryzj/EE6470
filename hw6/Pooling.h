@@ -26,6 +26,6 @@ public:
     ~Pooling();
 private:
     void do_pooling();
-    sc_int<32> val[4];
+    sc_uint<32> val[4];
 };
 #endif

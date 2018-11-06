@@ -46,7 +46,7 @@ void Pooling::do_pooling() {
                 val[v]= input.read();
 #endif
         }
-        sc_int<32> result = 0;
+        sc_uint<32> result = 0;
         for (unsigned int i = 0; i < 4; ++i) {
             HLS_CONSTRAIN_LATENCY(0, 1, "lat01");
             if(val[i] > result){

@@ -54,12 +54,11 @@ define_hls_module Pooling ../Pooling.cpp
 define_hls_config Pooling BASIC
 define_hls_config Pooling DPA       --dpopt_auto=op,expr
 
-set IMAGE_DIR           ".."
-
 ### 5. Define simulation configuration for each HLS configuration
+
 ### 5.1 The behavioral simulation (C++ only).
 define_sim_config B 
 ### 5.2 The Verilog simulation for HLS config "BASIC". 
-define_sim_config V_BASIC "SobelFilter RTL_V BASIC" 
+define_sim_config V_BASIC "Pooling RTL_V BASIC" 
 ### 5.3 The Verilog simulation for HLS config "DPA". 
-define_sim_config V_DPA "SobelFilter RTL_V DPA"
+define_sim_config V_DPA "Pooling RTL_V DPA"
