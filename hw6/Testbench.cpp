@@ -15,7 +15,7 @@ Testbench::~Testbench() {
     cout << "Total run time = " << total_run_time << endl;
 }
 
-Testbench::fetch_result(){
+void Testbench::fetch_result(){
 #ifndef NATIVE_SYSTEMC
     i_result.reset();
 #endif
@@ -28,10 +28,6 @@ Testbench::fetch_result(){
 #endif
     total_run_time = sc_time_stamp() - total_start_time;
     sc_stop();
-}
-
-void Testbench::Test_Thread(){
-
 }
 
 void Testbench::GenTestData() {

@@ -34,7 +34,6 @@ public:
     ~Testbench();
 
 private:
-    void Test_Thread();
     void GenTestData();
     void fetch_result();
 
