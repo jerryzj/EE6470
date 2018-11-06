@@ -19,7 +19,7 @@ System * sys = NULL;
 
 #ifndef NATIVE_SYSTEMC
 extern void esc_elaborate(){
-    sys = new System("sys", esc_argv(1), esc_argv(2));
+    sys = new System("sys");
 }
 extern void esc_cleanup(){
     delete sys;
@@ -32,7 +32,7 @@ int sc_main(int argc, char **argv) {
     esc_initialize(argc, argv);
     esc_elaborate();
 #else
-    sys = new System("sys", argv[1], argv[2]);
+    sys = new System("sys");
 #endif
 
     sc_start();
