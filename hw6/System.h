@@ -13,7 +13,7 @@ using namespace sc_core;
 class System: public sc_module{
 public:
     SC_HAS_PROCESS( System );
-    System( sc_module_name n, std::string input_bmp, std::string output_bmp );
+    System( sc_module_name n);
     ~System();
 private:
     Testbench tb;

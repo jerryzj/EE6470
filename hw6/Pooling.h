@@ -20,7 +20,6 @@ public:
     sc_fifo_in< sc_dt::sc_uint<32> > input;
     sc_fifo_out< sc_dt::sc_uint<32> > output;
 #endif
-
     SC_HAS_PROCESS( Pooling );
     Pooling( sc_module_name n );
     ~Pooling();
