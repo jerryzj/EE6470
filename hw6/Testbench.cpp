@@ -2,7 +2,7 @@
 
 Testbench::Testbench(sc_module_name n) : sc_module(n){
     result = 0;
-    SC_THREAD(Test_Thread);
+    SC_THREAD(GenTestData);
     sensitive << i_clk.pos();
     dont_initialize();
 
@@ -17,14 +17,14 @@ Testbench::~Testbench() {
 
 void Testbench::fetch_result(){
 #ifndef NATIVE_SYSTEMC
-    i_result.reset();
+    input.reset();
 #endif
     wait(5);
     //wait(1);
 #ifndef NATIVE_SYSTEMC
-    result = i_result.get();
+    result = input.get();
 #else
-    result = i_result.read();
+    result = input.read();
 #endif
     total_run_time = sc_time_stamp() - total_start_time;
     sc_stop();
