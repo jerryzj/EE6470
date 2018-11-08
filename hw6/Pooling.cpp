@@ -61,19 +61,17 @@ void Pooling::do_pooling() {
 void Pooling::read_data(){
     sc_dt::sc_uint<32> offset = 0;
     for(int i = 0; i < i_ch; ++i){
-        for(int j = 0; j < i_width; ++j){
-            for(int k = 0; k < i_height; ++k){
-                offset = i * i_ch + j * i_width + k * i_height;
+    for(int j = 0; j < i_width; ++j){
+    for(int k = 0; k < i_height; ++k){
+        offset = i * i_ch + j * i_width + k * i_height;
 #ifndef NATIVE_SYSTEMC
 {
-                HLS_CONSTRAIN_LATENCY(0, 1, "pooling_read_latency");
-                HLS_DEFINE_PROTOCOL("input")
-                tensor[offset] = input.get();
+        HLS_CONSTRAIN_LATENCY(0, 1, "pooling_read_latency");
+        HLS_DEFINE_PROTOCOL("input")
+        tensor[offset] = input.get();
 }
 #else
-                tensor[offset] = input.read();
+        tensor[offset] = input.read();
 #endif
-            }
-        }
-    }
+    }}}
 }
