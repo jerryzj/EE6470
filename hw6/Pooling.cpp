@@ -1,4 +1,3 @@
-#include <cmath>
 #ifndef NATIVE_SYSTEMC
 #include "stratus_hls.h"
 #endif
@@ -7,8 +6,9 @@
 
 Pooling::Pooling( sc_module_name n ): sc_module( n ){
 #ifndef NATIVE_SYSTEMC
-    HLS_FLATTEN_ARRAY(val);
+    HLS_FLATTEN_ARRAY(tensor);
 #endif
+    tensor = {0};
     SC_THREAD( do_pooling );
     sensitive << i_clk.pos();
     dont_initialize();
@@ -30,37 +30,50 @@ void Pooling::do_pooling() {
 #endif
         wait();
     }
-    while (true) {
-        for (unsigned int i = 0; i < 4; ++i) {
-            HLS_CONSTRAIN_LATENCY(0, 1, "lat00");
-            val[i] = 0;
-        }
-        for (unsigned int v = 0; v< 4; ++v) {
-#ifndef NATIVE_SYSTEMC
-                {
-                    HLS_DEFINE_PROTOCOL("input");
-                    val[v] = input.get();
-                    wait();
+    while(true){
+        result = 0;
+        read_data();    // load data to local buffer
+        for(int c = 0; c < i_ch; ++c){
+        for(int w = 0; w < i_width; ++w){
+        for(int h = 0; h < i_height; ++h){
+            for(int x = 0; x < window_w; ++x){
+            for(int y = 0; y < window_h; ++y){
+                win_w_start = (w * stride) + x;
+                win_h_start = (h * stride) + y;
+                offset = c * o_ch + win_w_start * o_width + win_h_start * o_height;
+                if(result < tensor[offset]){
+                    result = tensor[offset];
                 }
+            }}
+#ifndef NATIVE_SYSTEMC
+{
+                HLS_DEFINE_PROTOCOL("output");
+                output.put(result);
+                wait();
+}
 #else
-                val[v]= input.read();
+                output.write(result);
 #endif
-        }
-        sc_uint<32> result = 0;
-        for (unsigned int i = 0; i < 4; ++i) {
-            HLS_CONSTRAIN_LATENCY(0, 1, "lat01");
-            if(val[i] > result){
-                result = val[i];
+        }}}
+    }
+}
+
+void Pooling::read_data(){
+    sc_dt::sc_uint<32> offset = 0;
+    for(int i = 0; i < i_ch; ++i){
+        for(int j = 0; j < i_width; ++j){
+            for(int k = 0; k < i_height; ++k){
+                offset = i * i_ch + j * i_width + k * i_height;
+#ifndef NATIVE_SYSTEMC
+{
+                HLS_CONSTRAIN_LATENCY(0, 1, "pooling_read_latency");
+                HLS_DEFINE_PROTOCOL("input")
+                tensor[offset] = input.get();
+}
+#else
+                tensor[offset] = input.read();
+#endif
             }
         }
-#ifndef NATIVE_SYSTEMC
-        {
-            HLS_DEFINE_PROTOCOL("output");
-            output.put(result);
-            wait();
-        }
-#else
-        o_result.write(total);
-#endif
     }
 }

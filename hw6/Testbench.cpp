@@ -19,12 +19,23 @@ void Testbench::fetch_result(){
     input.reset();
 #endif
     wait(5);
-    //wait(1);
+    wait(1);
+
+    cout<<"Returned data"<<endl;
+    for(int i = 0; i < o_ch; ++i){
+        cout<<"Channel "<<i<<endl;
+        for(int j = 0; j < o_width; ++j){
+            for(int k = 0; k < o_height; ++k){
 #ifndef NATIVE_SYSTEMC
-    result = input.get();
+                result = input.get();
 #else
-    result = input.read();
+                result = input.read();
 #endif
+                cout<<result<<" "
+            }
+        }
+        cout<<endl;
+    }
     total_run_time = sc_time_stamp() - total_start_time;
     sc_stop();
 }
@@ -47,16 +58,20 @@ void Testbench::GenTestData() {
     total_start_time = sc_time_stamp();
 
     cout<<"Start generating test data"<<endl;
+    cout<<"Input data"<<endl;
     for(int i = 0; i < i_ch; ++i){
+        cout<<"Channel "<<i<<endl;
         for(int j = 0; j < i_width; ++j){
             for(int k = 0; k < i_height ; ++k){
                 data = rand() % 256;
+                cout<<data<<" ";
 #ifndef NATIVE_SYSTEMC
-                output.put(rgb);
+                output.put(data);
 #else
-                output.write(rgb);
+                output.write(data);
 #endif
             }
         }
+        cout<<endl;
     }
 }

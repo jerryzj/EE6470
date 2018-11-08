@@ -7,6 +7,7 @@ using namespace sc_core;
 #include <cynw_p2p.h>
 #endif
 
+#include <cmath>
 #include "filter_def.h"
 
 class Pooling: public sc_module{
@@ -25,5 +26,12 @@ public:
     ~Pooling();
 private:
     void do_pooling();
+    void read_data();
+
+    sc_uint<32> win_w_start;
+    sc_uint<32> win_h_start;
+    sc_uint<32> offset;
+    sc_uint<32> result;
+    sc_uint<32> tensor[i_ch * i_width * i_height];  //local buffer
 };
 #endif
