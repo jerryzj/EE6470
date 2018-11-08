@@ -30,6 +30,9 @@ extern void esc_cleanup(){
 int sc_main(int argc, char **argv) {
 #ifndef NATIVE_SYSTEMC
     esc_initialize(argc, argv);
+#endif
+
+#ifndef NATIVE_SYSTEMC
     esc_elaborate();
 #else
     sys = new System("sys");

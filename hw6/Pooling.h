@@ -12,7 +12,7 @@ using namespace sc_core;
 class Pooling: public sc_module{
 public:
     sc_in_clk i_clk;
-    sc_in < bool >  i_rst;
+    sc_in <bool>  i_rst;
 #ifndef NATIVE_SYSTEMC
     cynw_p2p< sc_dt::sc_uint<32> >::in input;
     cynw_p2p< sc_dt::sc_uint<32> >::out output;
@@ -25,6 +25,5 @@ public:
     ~Pooling();
 private:
     void do_pooling();
-    sc_uint<32> val[4];
 };
 #endif

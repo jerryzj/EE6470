@@ -31,6 +31,5 @@ private:
     sc_fifo< sc_dt::sc_uint<32> > input;
     sc_fifo< sc_dt::sc_uint<32> > output;
 #endif
-    std::string _output_bmp;
 };
 #endif

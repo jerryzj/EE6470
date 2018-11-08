@@ -1,6 +1,7 @@
 #ifndef TESTBENCH_H_
 #define TESTBENCH_H_
 
+#include <cstdlib>
 #include <string>
 #include <iostream>
 using namespace std;
@@ -30,14 +31,15 @@ public:
 
     SC_HAS_PROCESS(Testbench);
 
-    Testbench(const sc_module_name n);
+    Testbench(sc_module_name n);
     ~Testbench();
 
 private:
     void GenTestData();
     void fetch_result();
 
-    sc_int<32> result;
+    sc_uint<32> tensor[i_ch * i_width * i_height];
+    sc_uint<32> result;
 
     unsigned int n_txn;
     sc_time max_txn_time;

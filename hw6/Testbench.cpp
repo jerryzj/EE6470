@@ -5,7 +5,6 @@ Testbench::Testbench(sc_module_name n) : sc_module(n){
     SC_THREAD(GenTestData);
     sensitive << i_clk.pos();
     dont_initialize();
-
     SC_THREAD(fetch_result);
     sensitive << i_clk.pos();
     dont_initialize();
@@ -31,7 +30,7 @@ void Testbench::fetch_result(){
 }
 
 void Testbench::GenTestData() {
-    sc_uint<32> data[4];
+    sc_uint<32> data;
     
     n_txn = 0;
     max_txn_time = SC_ZERO_TIME;
@@ -47,12 +46,17 @@ void Testbench::GenTestData() {
     wait(1);
     total_start_time = sc_time_stamp();
 
-    for(uint i = 0; i < 4; i++){
-        data[i] = rand() % 256;
+    cout<<"Start generating test data"<<endl;
+    for(int i = 0; i < i_ch; ++i){
+        for(int j = 0; j < i_width; ++j){
+            for(int k = 0; k < i_height ; ++k){
+                data = rand() % 256;
 #ifndef NATIVE_SYSTEMC
-        output.put(data[i]);
+                output.put(rgb);
 #else
-        output.write(data[i]);
+                output.write(rgb);
 #endif
+            }
+        }
     }
 }
