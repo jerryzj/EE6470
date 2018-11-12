@@ -23,6 +23,7 @@ void Testbench::fetch_result(){
     for(int i = 0; i < o_ch; ++i){
         for(int j = 0; j < o_width; ++j){
             for(int k = 0; k < o_height; ++k){
+                result = 0;
 #ifndef NATIVE_SYSTEMC
                 result = input.get();
 #else
@@ -30,6 +31,7 @@ void Testbench::fetch_result(){
 #endif
                 cout<<result<<" ";
             }
+            cout<<endl;
         }
         cout<<endl;
     }
@@ -53,12 +55,19 @@ void Testbench::GenTestData() {
     o_rst.write(true);
     wait(1);
     total_start_time = sc_time_stamp();
-
-    
+    unsigned int a = 0;
+    cout<<"Size of uint:"<<sizeof(a)<<endl;
+    sc_uint<32> array[i_ch * i_width* i_height];
+    for(int i = 0; i < i_ch * i_width* i_height; i++){
+        array[i] = i;
+    }
+    int counter = 0;
     for(int i = 0; i < i_ch; ++i){
-        cout<<"Input data"<<endl;
+        cout<<"Input data channel "<<i<<endl;
         for(int j = 0; j < i_width; ++j){
             for(int k = 0; k < i_height ; ++k){
+                int offset = i * i_ch + j * i_width + k * i_height;
+                //data =  array[counter++];
                 data = rand() % 256;
                 cout<<data<<" ";
 #ifndef NATIVE_SYSTEMC
@@ -66,9 +75,10 @@ void Testbench::GenTestData() {
 #else
                 output.write(data);
 #endif
+                data = 0;
             }
+            cout<<endl;
         }
         cout<<endl;
     }
-    cout<<endl;
 }
