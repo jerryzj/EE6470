@@ -33,12 +33,12 @@ void Pooling::do_pooling() {
         result = 0;
         read_data();    // load data to local buffer
         for(int c = 0; c < i_ch; ++c){
-        for(int w = 0; w < i_width; ++w){
         for(int h = 0; h < i_height; ++h){
-            for(int x = 0; x < window_w; ++x){
-            for(int y = 0; y < window_h; ++y){
-                win_w_start = (w * stride) + x;
+        for(int w = 0; w < i_width; ++w){
+            for(int x = 0; x < window_h; ++x){
+            for(int y = 0; y < window_w; ++y){
                 win_h_start = (h * stride) + y;
+                win_w_start = (w * stride) + x;
                 offset = c * o_ch + win_w_start * o_width + win_h_start * o_height;
                 if(result < tensor[offset]){
                     result = tensor[offset];
@@ -65,9 +65,10 @@ void Pooling::read_data(){
         offset = i * i_ch + j * i_width + k * i_height;
 #ifndef NATIVE_SYSTEMC
 {
-        HLS_CONSTRAIN_LATENCY(0, 1, "pooling_read_latency");
+        HLS_CONSTRAIN_LATENCY(0, 2, "pooling_read_latency");
         HLS_DEFINE_PROTOCOL("input");
         tensor[offset] = input.get();
+        wait();
 }
 #else
         tensor[offset] = input.read();

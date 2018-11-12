@@ -18,12 +18,9 @@ void Testbench::fetch_result(){
 #ifndef NATIVE_SYSTEMC
     input.reset();
 #endif
-    wait(5);
-    wait(1);
+    wait(10);
 
-    cout<<"Returned data"<<endl;
     for(int i = 0; i < o_ch; ++i){
-        cout<<"Channel "<<i<<endl;
         for(int j = 0; j < o_width; ++j){
             for(int k = 0; k < o_height; ++k){
 #ifndef NATIVE_SYSTEMC
@@ -57,10 +54,9 @@ void Testbench::GenTestData() {
     wait(1);
     total_start_time = sc_time_stamp();
 
-    cout<<"Start generating test data"<<endl;
-    cout<<"Input data"<<endl;
+    
     for(int i = 0; i < i_ch; ++i){
-        cout<<"Channel "<<i<<endl;
+        cout<<"Input data"<<endl;
         for(int j = 0; j < i_width; ++j){
             for(int k = 0; k < i_height ; ++k){
                 data = rand() % 256;
@@ -74,4 +70,5 @@ void Testbench::GenTestData() {
         }
         cout<<endl;
     }
+    cout<<endl;
 }
