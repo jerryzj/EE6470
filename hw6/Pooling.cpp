@@ -8,7 +8,6 @@ Pooling::Pooling( sc_module_name n ): sc_module( n ){
 #ifndef NATIVE_SYSTEMC
     HLS_FLATTEN_ARRAY(tensor);
 #endif
-    tensor = {0};
     SC_THREAD( do_pooling );
     sensitive << i_clk.pos();
     dont_initialize();
@@ -67,7 +66,7 @@ void Pooling::read_data(){
 #ifndef NATIVE_SYSTEMC
 {
         HLS_CONSTRAIN_LATENCY(0, 1, "pooling_read_latency");
-        HLS_DEFINE_PROTOCOL("input")
+        HLS_DEFINE_PROTOCOL("input");
         tensor[offset] = input.get();
 }
 #else

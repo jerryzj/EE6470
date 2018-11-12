@@ -31,7 +31,7 @@ void Testbench::fetch_result(){
 #else
                 result = input.read();
 #endif
-                cout<<result<<" "
+                cout<<result<<" ";
             }
         }
         cout<<endl;
