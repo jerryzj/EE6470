@@ -29,7 +29,7 @@ private:
     void read_data();
 
     sc_uint<32> result;
-    sc_uint<32> tensor[i_ch][i_width][i_height];
+    sc_uint<32> tensor[i_width][i_height];
     sc_uint<32> unit[stride* stride];
 };
 #endif

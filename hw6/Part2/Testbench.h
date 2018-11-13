@@ -39,6 +39,7 @@ private:
     void fetch_result();
 
     sc_uint<32> result;
+    sc_event _pooling_done;
 
     unsigned int n_txn;
     sc_time max_txn_time;

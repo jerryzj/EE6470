@@ -34,6 +34,7 @@ void Testbench::fetch_result(){
             cout<<endl;
         }
         cout<<endl;
+        _pooling_done.notify();
     }
     total_run_time = sc_time_stamp() - total_start_time;
     sc_stop();
@@ -72,5 +73,6 @@ void Testbench::GenTestData() {
             cout<<endl;
         }
         cout<<endl;
+        wait(_pooling_done);
     }
 }

@@ -31,15 +31,13 @@ void Pooling::do_pooling() {
     }
     while(true){
         read_data();    // load data to local buffer
-        for(int c = 0; c < i_ch; ++c){
-        HLS_CONSTRAIN_LATENCY(0, 1, "pooling_latency");
         for(int w = 0; w < i_width; w+=stride){
         for(int h = 0; h < i_height; h+=stride){
             result = 0;
-            unit[0] = tensor[c][w][h];
-            unit[1] = tensor[c][w][h+1];
-            unit[2] = tensor[c][w+1][h];
-            unit[3] = tensor[c][w+1][h+1];
+            unit[0] = tensor[w][h];
+            unit[1] = tensor[w][h+1];
+            unit[2] = tensor[w+1][h];
+            unit[3] = tensor[w+1][h+1];
             for(int i = 0; i < stride * stride; i++){
                 if(result < unit[i]){
                     result = unit[i];
@@ -49,28 +47,25 @@ void Pooling::do_pooling() {
 {
                 HLS_DEFINE_PROTOCOL("output");
                 output.put(result);
-                wait();
 }
 #else
                 output.write(result);
 #endif
-        }}}
+        }}
     }
 }
 
 void Pooling::read_data(){
-    for(int i = 0; i < i_ch; ++i){
     for(int j = 0; j < i_width; ++j){
     for(int k = 0; k < i_height; ++k){
 #ifndef NATIVE_SYSTEMC
 {
-//        HLS_CONSTRAIN_LATENCY(0, 1, "pooling_read_latency");
         HLS_DEFINE_PROTOCOL("input");
-        tensor[i][j][k] = input.get();
+        tensor[j][k] = input.get();
         wait();
 }
 #else
-        tensor[i][j][k] = input.read();
+        tensor[j][k] = input.read();
 #endif
-    }}}
+    }}
 }
