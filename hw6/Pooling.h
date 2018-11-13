@@ -28,8 +28,6 @@ private:
     void do_pooling();
     void read_data();
 
-    sc_uint<32> win_w_start;
-    sc_uint<32> win_h_start;
     sc_uint<32> result;
     sc_uint<32> tensor[i_ch][i_width][i_height];
     sc_uint<32> unit[stride* stride];

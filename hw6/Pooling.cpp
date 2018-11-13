@@ -58,13 +58,12 @@ void Pooling::do_pooling() {
 }
 
 void Pooling::read_data(){
-    sc_dt::sc_uint<32> offset = 0;
     for(int i = 0; i < i_ch; ++i){
     for(int j = 0; j < i_width; ++j){
     for(int k = 0; k < i_height; ++k){
 #ifndef NATIVE_SYSTEMC
 {
-        HLS_CONSTRAIN_LATENCY(0, 1, "pooling_read_latency");
+//        HLS_CONSTRAIN_LATENCY(0, 1, "pooling_read_latency");
         HLS_DEFINE_PROTOCOL("input");
         tensor[i][j][k] = input.get();
         wait();
