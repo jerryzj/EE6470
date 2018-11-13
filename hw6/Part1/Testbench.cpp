@@ -55,19 +55,11 @@ void Testbench::GenTestData() {
     o_rst.write(true);
     wait(1);
     total_start_time = sc_time_stamp();
-    unsigned int a = 0;
-    cout<<"Size of uint:"<<sizeof(a)<<endl;
-    sc_uint<32> array[i_ch * i_width* i_height];
-    for(int i = 0; i < i_ch * i_width* i_height; i++){
-        array[i] = i;
-    }
-    int counter = 0;
+    
     for(int i = 0; i < i_ch; ++i){
-        cout<<"Input data channel "<<i<<endl;
+        cout<<"Input data channel: "<<i<<endl;
         for(int j = 0; j < i_width; ++j){
             for(int k = 0; k < i_height ; ++k){
-                int offset = i * i_ch + j * i_width + k * i_height;
-                //data =  array[counter++];
                 data = rand() % 256;
                 cout<<data<<" ";
 #ifndef NATIVE_SYSTEMC

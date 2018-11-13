@@ -32,6 +32,7 @@ void Pooling::do_pooling() {
     while(true){
         read_data();    // load data to local buffer
         for(int c = 0; c < i_ch; ++c){
+        HLS_CONSTRAIN_LATENCY(0, 1, "pooling_latency");
         for(int w = 0; w < i_width; w+=stride){
         for(int h = 0; h < i_height; h+=stride){
             result = 0;
