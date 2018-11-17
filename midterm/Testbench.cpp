@@ -40,8 +40,6 @@ void Testbench::fetch_result(){
 }
 
 void Testbench::GenTestData() {
-    sc_uint<32> data;
-    
     n_txn = 0;
     max_txn_time = SC_ZERO_TIME;
     min_txn_time = SC_ZERO_TIME;
@@ -55,22 +53,59 @@ void Testbench::GenTestData() {
     o_rst.write(true);
     wait(1);
     total_start_time = sc_time_stamp();
+    data = 0;
     
-    for(int i = 0; i < i_ch; ++i){
-        cout<<"Input data channel: "<<i<<endl;
+    
+
+    for(int i = 0; i < i_height; ++i){
+        cout<<"Generating input data"<<endl;
         for(int j = 0; j < i_width; ++j){
-            for(int k = 0; k < i_height ; ++k){
-                data = rand() % 256;
-                cout<<data<<" ";
+            data = rand() % 256;
+            cout<<data<<" ";
 #ifndef NATIVE_SYSTEMC
-                output.put(data);
+            output.put(data);
 #else
-                output.write(data);
+            output.write(data);
 #endif
-                data = 0;
-            }
-            cout<<endl;
+            data = 0;
         }
         cout<<endl;
     }
+    cout<<endl;
+}
+
+void Testbench::GenKernel(){
+    data = 0;
+    cout<<"Generating Kernel"<<endl;
+    for(int i = 0; i < k_width; i++){
+        for(int j = 0; j < k_height; j++){
+            data = rand() % 15;
+            cout<<data<<" ";
+#ifndef NATIVE_SYSTEMC
+            output.put(data);
+#else
+            output.write(data);
+#endif
+        }
+        cout<<endl;
+    }
+    cout<<endl;
+}
+
+void Testbench::GenIPsum(){
+    data = 0;
+    cout<<"Generating IPsum"<<endl;
+    for(int i = 0; i < o_width; i++){
+        for(int j = 0; j < o_height; j++){
+            data = rand() % 128;
+            cout<<data<<" ";
+#ifndef NATIVE_SYSTEMC
+            output.put(data);
+#else
+            output.write(data);
+#endif
+        }
+        cout<<endl;
+    }
+    cout<<endl;
 }

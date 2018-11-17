@@ -31,63 +31,65 @@ void Pooling::do_pooling() {
     }
     while(true){
         read_kernel();
+        read_in_part_sum();
         read_data();    // load data to local buffer
-        for(int c = 0; c < i_ch; ++c){
-        //HLS_CONSTRAIN_LATENCY(0, 1, "pooling_latency");
-        for(int w = 0; w < i_width; w+=stride){
-        for(int h = 0; h < i_height; h+=stride){
+        for(uint h = 0; h < o_height; ++h){
+        for(uint w = 0; w < o_width; ++w){
             result = 0;
-            unit[0] = tensor[c][w][h];
-            unit[1] = tensor[c][w][h+1];
-            unit[2] = tensor[c][w+1][h];
-            unit[3] = tensor[c][w+1][h+1];
-            for(int i = 0; i < stride * stride; i++){
-                if(result < unit[i]){
-                    result = unit[i];
-                }
-            }
+            for(uint rh = 0; rh < k_height; ++rh){
+            for(uint rw = 0; rw < k_width; ++rw){
+                result += ip_sum[h][w] + tensor[stride*h+rh][sitride*w+rw] * kernel[rh][rw];
+            }}
 #ifndef NATIVE_SYSTEMC
 {
                 HLS_DEFINE_PROTOCOL("output");
                 output.put(result);
-                //wait();
 }
 #else
                 output.write(result);
 #endif
-        }}}
+        }}
     }
 }
 
 void Pooling::read_kernel(){
-    for(int i = 0; i < k_batch_size; ++i){
-    for(int j = 0; j < k_ch; ++j){
-    for(int k = 0; k < k_width; ++k){
-    for(int l = 0; l < K_height; ++l){
+    for(uint k = 0; k < k_width; ++k){
+    for(uint l = 0; l < K_height; ++l){
 #ifndef NATIVE_SYSTEMC
 {
         HLS_DEFINE_PROTOCOL("input");
-        kernel[i][j][k][l] = input.get();
-        wait();
+        kernel[k][l] = input.get();
 }
 #else
-        kernel[i][j][k][l] = input.read();
+        kernel[k][l] = input.read();
 #endif
-    }}}}
+    }}
 }
 
-void Pooling::read_data(){
-    for(int i = 0; i < i_ch; ++i){
-    for(int j = 0; j < i_width; ++j){
-    for(int k = 0; k < i_height; ++k){
+void Pooling::read_data()
+    for(uint j = 0; j < i_width; ++j){
+    for(uint k = 0; k < i_height; ++k){
 #ifndef NATIVE_SYSTEMC
 {
         HLS_DEFINE_PROTOCOL("input");
-        tensor[i][j][k] = input.get();
-        wait();
+        tensor[j][k] = input.get();
 }
 #else
-        tensor[i][j][k] = input.read();
+        tensor[j][k] = input.read();
 #endif
-    }}}
+    }}
+}
+
+void Pooling::read_in_part_sum(){
+    for(uint i = 0; i < o_width; ++i){
+    for(uint j = 0; j < o_height; ++j){
+#ifndef NATIVE_SYSTEMC
+{
+        HLS_DEFINE_PROTOCOL("input");
+        ip_sum[i][j] = input.get();
+}
+#else
+        ip_sum[i][j] = input.read();
+#endif
+    }}
 }

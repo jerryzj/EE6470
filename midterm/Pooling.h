@@ -10,6 +10,8 @@ using namespace sc_core;
 #include <cmath>
 #include "filter_def.h"
 
+using sc_uint<8> uint;
+
 class Pooling: public sc_module{
 public:
     sc_in_clk i_clk;
@@ -28,10 +30,11 @@ private:
     void do_pooling();
     void read_kernel();
     void read_data();
+    void read_in_part_sum();
 
     sc_uint<32> result;
-    sc_uint<32> tensor [i_ch][i_width][i_height];
-    sc_uint<32> kernel [k_batch_sizee][k_ch][k_width][k_height];
-    sc_uint<32> unit[stride* stride];
+    sc_uint<32> tensor [i_width][i_height];
+    sc_uint<32> kernel [k_width][k_height];
+    sc_uint<32> ip_sum [o_width][o_height];
 };
 #endif

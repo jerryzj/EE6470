@@ -35,11 +35,13 @@ public:
     ~Testbench();
 
 private:
+    void GenKernel();
+    void GenIPsum();
     void GenTestData();
     void fetch_result();
 
     sc_uint<32> result;
-
+    sc_uint<32> data;
     unsigned int n_txn;
     sc_time max_txn_time;
     sc_time min_txn_time;
