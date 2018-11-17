@@ -30,6 +30,7 @@ void Pooling::do_pooling() {
         wait();
     }
     while(true){
+        read_kernel();
         read_data();    // load data to local buffer
         for(int c = 0; c < i_ch; ++c){
         //HLS_CONSTRAIN_LATENCY(0, 1, "pooling_latency");
@@ -58,13 +59,29 @@ void Pooling::do_pooling() {
     }
 }
 
+void Pooling::read_kernel(){
+    for(int i = 0; i < k_batch_size; ++i){
+    for(int j = 0; j < k_ch; ++j){
+    for(int k = 0; k < k_width; ++k){
+    for(int l = 0; l < K_height; ++l){
+#ifndef NATIVE_SYSTEMC
+{
+        HLS_DEFINE_PROTOCOL("input");
+        kernel[i][j][k][l] = input.get();
+        wait();
+}
+#else
+        kernel[i][j][k][l] = input.read();
+#endif
+    }}}}
+}
+
 void Pooling::read_data(){
     for(int i = 0; i < i_ch; ++i){
     for(int j = 0; j < i_width; ++j){
     for(int k = 0; k < i_height; ++k){
 #ifndef NATIVE_SYSTEMC
 {
-//        HLS_CONSTRAIN_LATENCY(0, 1, "pooling_read_latency");
         HLS_DEFINE_PROTOCOL("input");
         tensor[i][j][k] = input.get();
         wait();
