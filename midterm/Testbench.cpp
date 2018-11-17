@@ -20,21 +20,20 @@ void Testbench::fetch_result(){
 #endif
     wait(10);
 
-    for(int i = 0; i < o_ch; ++i){
-        for(int j = 0; j < o_width; ++j){
-            for(int k = 0; k < o_height; ++k){
-                result = 0;
+    for(int j = 0; j < o_width; ++j){
+        for(int k = 0; k < o_height; ++k){
+            result = 0;
 #ifndef NATIVE_SYSTEMC
-                result = input.get();
+            result = input.get();
 #else
-                result = input.read();
+            result = input.read();
 #endif
-                cout<<result<<" ";
-            }
-            cout<<endl;
+            cout<<result<<" ";
         }
         cout<<endl;
     }
+    cout<<endl;
+    
     total_run_time = sc_time_stamp() - total_start_time;
     sc_stop();
 }
@@ -55,10 +54,10 @@ void Testbench::GenTestData() {
     total_start_time = sc_time_stamp();
     data = 0;
     
-    
-
+    GenKernel();
+    GenIPsum();
+    cout<<"Generating input data"<<endl;
     for(int i = 0; i < i_height; ++i){
-        cout<<"Generating input data"<<endl;
         for(int j = 0; j < i_width; ++j){
             data = rand() % 256;
             cout<<data<<" ";
