@@ -10,8 +10,6 @@ using namespace sc_core;
 #include <cmath>
 #include "filter_def.h"
 
-using sc_uint<8> uint;
-
 class Pooling: public sc_module{
 public:
     sc_in_clk i_clk;

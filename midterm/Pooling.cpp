@@ -33,12 +33,12 @@ void Pooling::do_pooling() {
         read_kernel();
         read_in_part_sum();
         read_data();    // load data to local buffer
-        for(uint h = 0; h < o_height; ++h){
-        for(uint w = 0; w < o_width; ++w){
+        for(unsigned int h = 0; h < o_height; ++h){
+        for(unsigned int w = 0; w < o_width; ++w){
             result = 0;
-            for(uint rh = 0; rh < k_height; ++rh){
-            for(uint rw = 0; rw < k_width; ++rw){
-                result += ip_sum[h][w] + tensor[stride*h+rh][sitride*w+rw] * kernel[rh][rw];
+            for(unsigned int rh = 0; rh < k_height; ++rh){
+            for(unsigned int rw = 0; rw < k_width; ++rw){
+                result += ip_sum[h][w] + tensor[stride*h+rh][stride*w+rw] * kernel[rh][rw];
             }}
 #ifndef NATIVE_SYSTEMC
 {
@@ -53,8 +53,8 @@ void Pooling::do_pooling() {
 }
 
 void Pooling::read_kernel(){
-    for(uint k = 0; k < k_width; ++k){
-    for(uint l = 0; l < K_height; ++l){
+    for(unsigned int k = 0; k < k_width; ++k){
+    for(unsigned int l = 0; l < k_height; ++l){
 #ifndef NATIVE_SYSTEMC
 {
         HLS_DEFINE_PROTOCOL("input");
@@ -66,9 +66,9 @@ void Pooling::read_kernel(){
     }}
 }
 
-void Pooling::read_data()
-    for(uint j = 0; j < i_width; ++j){
-    for(uint k = 0; k < i_height; ++k){
+void Pooling::read_data(){
+    for(unsigned int j = 0; j < i_width; ++j){
+    for(unsigned int k = 0; k < i_height; ++k){
 #ifndef NATIVE_SYSTEMC
 {
         HLS_DEFINE_PROTOCOL("input");
@@ -81,8 +81,8 @@ void Pooling::read_data()
 }
 
 void Pooling::read_in_part_sum(){
-    for(uint i = 0; i < o_width; ++i){
-    for(uint j = 0; j < o_height; ++j){
+    for(unsigned int i = 0; i < o_width; ++i){
+    for(unsigned int j = 0; j < o_height; ++j){
 #ifndef NATIVE_SYSTEMC
 {
         HLS_DEFINE_PROTOCOL("input");
