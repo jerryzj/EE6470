@@ -123,7 +123,7 @@ void ConvEngine::DoConv() {
 				                reinterpret_cast<unsigned char*>(&psum),
 				                sizeof(float));
   	}}}
-	wait(data_cube_out_channel.get() * data_cube_out_height.get() * data_cube_out_widhth.get() * filter_width.get() * filter_width.get() * pool_period);
+	//wait(data_cube_out_channel.get() * data_cube_out_height.get() * data_cube_out_widhth.get() * filter_width.get() * filter_width.get() * pool_period);
 
 
 /*
