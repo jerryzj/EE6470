@@ -16,11 +16,6 @@ void Testbench::Test_Thread() {
 	BaremetalDNN_model_wraper();
 }
 
-void Testbench::GenTestData(float* data, uint data_num) {
-	for(uint i = 0; i < data_num; i++)
-		data[i] = rand() % 256;
-}
-
 void Testbench::LoadTestData(uint address, float* data, uint data_num) {
 	i_socket.write_debug<unsigned int>(address, reinterpret_cast<unsigned int*>(data), data_num);
 }
@@ -66,7 +61,7 @@ void Testbench::ConfigPoolDMA(vector<DmaChConfig> &config) {
 	i_socket.write<uint>(POOL_DMA_BASE_ADDRESS + (1 << 2), 0);
 }
 
-void Testbench::ConfigPoolEngine(PoolConfig &config) {
+void Testbench::ConfigPoolEngine(ConvConfig &config) {
 	/* Check if pooling engine is ready (idle) for configuring */
 	uint status;
 	do {
@@ -76,7 +71,7 @@ void Testbench::ConfigPoolEngine(PoolConfig &config) {
 
 	/* Program config registers */
 	wait(AccessTime(sizeof(uint) * 12), SC_NS);
-	i_socket.write<uint>(POOL_BASE_ADDRESS + (2 << 2), config.pool_function);
+	i_socket.write<uint>(POOL_BASE_ADDRESS + (2 << 2), config.kernel_addr);
 	i_socket.write<uint>(POOL_BASE_ADDRESS + (3 << 2), config.data_in_address);
 	i_socket.write<uint>(POOL_BASE_ADDRESS + (4 << 2), config.data_out_address);
 	i_socket.write<uint>(POOL_BASE_ADDRESS + (5 << 2), config.data_cube_in_width);

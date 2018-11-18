@@ -5,7 +5,7 @@
 using namespace std;
 
 typedef struct {
-	uint pool_function;
+	uint kernel_addr; // 11/18 revised: Add convolution kernel input address
 	uint data_in_address;
 	uint data_out_address;
 	uint data_cube_in_width;
@@ -17,7 +17,7 @@ typedef struct {
 	uint filter_width;
 	uint filter_stride;
 	uint zero_padding;
-} PoolConfig;
+} ConvConfig;
 
 typedef struct {
 	uint channel_enable;
@@ -40,15 +40,12 @@ public:
 	void LoadTestData(uint address, float* data, uint data_num);
 	void GetResult(uint address, float* data, uint data_num);
 	void ConfigPoolDMA(vector<DmaChConfig> &config);
-	void ConfigPoolEngine(PoolConfig &config);
+	void ConfigPoolEngine(ConvConfig &config);
 	void PrintData(float* data, uint channel, uint height, uint width);
 
 private:
 	/* Main thread */
 	void Test_Thread();
-
-	void GenTestData(float* data, uint data_num);
-	
 	/* Bus timing model */
 	uint AccessTime(float data_length_in_bytes);
 };
