@@ -51,12 +51,13 @@ void Testbench::GenTestData() {
     wait(5);
     o_rst.write(true);
     wait(1);
-    total_start_time = sc_time_stamp();
+    
     data = 0;
     
     GenKernel();
     GenIPsum();
     cout<<"Generating input data"<<endl;
+    total_start_time = sc_time_stamp();
     for(int i = 0; i < i_height; ++i){
         for(int j = 0; j < i_width; ++j){
             data = rand() % 256;

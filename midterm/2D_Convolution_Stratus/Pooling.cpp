@@ -34,6 +34,7 @@ void Pooling::do_pooling() {
         read_in_part_sum();
         read_data();    // load data to local buffer
         for(unsigned int h = 0; h < o_height; ++h){
+        HLS_UNROLL_LOOP(ALL,"computational_loop");
         for(unsigned int w = 0; w < o_width; ++w){
             result = 0;
             for(unsigned int rh = 0; rh < k_height; ++rh){
