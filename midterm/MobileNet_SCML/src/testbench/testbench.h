@@ -36,7 +36,6 @@ public:
 	SC_HAS_PROCESS(Testbench);
 
 	Testbench(const sc_module_name &name);
-	~Testbench() {}
 	void LoadTestData(uint address, float* data, uint data_num);
 	void GetResult(uint address, float* data, uint data_num);
 	void ConfigConvDMA(vector<DmaChConfig> &config);

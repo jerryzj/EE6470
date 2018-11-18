@@ -82,7 +82,7 @@ void conv2d(TVMValue stack_value, int arg_num) {
   conv_config.data_cube_out_height  = conv_config.data_cube_out_width;
   conv_config.data_cube_out_channel = output_shape.c;
   conv_config.data_in_address       = POOL_BUFFER_ADDRESS;
-  conv_config.kernel_address        = POOL_BUFFER_ADDRESS
+  conv_config.kernel_addr       = POOL_BUFFER_ADDRESS
                                     + (conv_config.data_cube_in_channel
                                      * conv_config.data_cube_in_height
                                      * conv_config.data_cube_in_width
@@ -128,7 +128,7 @@ void conv2d(TVMValue stack_value, int arg_num) {
 
   dma_config[0].channel_enable  = 1;
   dma_config[0].source_address  = GLOBAL_BUFFER_ADDRESS;
-  dma_config[0].dest_address    = conv_config.kernel_address;
+  dma_config[0].dest_address    = conv_config.kernel_addr;
   dma_config[0].transfer_length = test_kernel_num * sizeof(float);
   dma_config[0].transfer_type   = 3;
   dma_config[0].line_length     = 0;
