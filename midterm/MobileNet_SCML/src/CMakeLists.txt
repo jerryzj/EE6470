@@ -17,7 +17,7 @@ add_custom_target(run
 file(GLOB src main.cpp)
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR})
 add_executable(conv ${src})
-target_link_libraries(pooling acc_platform_lib
+target_link_libraries(conv acc_platform_lib
                               dma_lib
                               conv_engine_lib
                               memory_lib
