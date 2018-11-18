@@ -86,6 +86,7 @@ void ConvEngine::DoConv() {
 #ifdef DEBUG
 	PrintConfigReg();
 #endif
+
     for(uint c = 0; c < data_cube_out_channel.get(); ++c){
     for(uint h = 0; h < data_cube_out_height.get() ; ++h){
     for(uint w = 0; w < data_cube_out_widhth.get() ; ++w){
@@ -97,9 +98,10 @@ void ConvEngine::DoConv() {
             uint Ih = filter_stride.get() * h + rh;
             uint Iw = filter_stride.get() * w + rw;
             uint Iidx = rc * data_cube_in_height.get() * data_cube_in_width.get()
-                     + Ih * data_cube_in_width.get() + Iw;
+                      + Ih * data_cube_in_width.get() + Iw;
             uint Kidx = c * data_cube_in_channel.get() * filter_width.get() * filter_width.get()
-                     + rh * filter_width.get() + rw;
+                      + rc * filter_width.get() * filter_width.get()
+                      + rh * filter_width.get() + rw;
             // load data from local buffer
             float i_feature, i_kernel;
             data_buffer.get((data_in_address & 0xFFFFF) + Iidx * sizeof(float),
@@ -109,7 +111,7 @@ void ConvEngine::DoConv() {
             // Computation
             o_psum += i_feature * i_kernel; 
         }}}
-        uint data_out_offset = c * data_cube_out_height.get() * data_cube_out_widhth.get()
+        int data_out_offset = c * data_cube_out_height.get() * data_cube_out_widhth.get()
                             + h * data_cube_out_widhth.get() + w;
         data_buffer.put((data_out_address & 0xFFFFF) + data_out_offset * sizeof(float),
         reinterpret_cast<unsigned char*>(&o_psum), sizeof(float));

@@ -98,10 +98,10 @@ void ConvEngine::DoConv() {
             uint Ih = filter_stride.get() * h + rh;
             uint Iw = filter_stride.get() * w + rw;
             uint Iidx = rc * data_cube_in_height.get() * data_cube_in_width.get()
-                     + Ih * data_cube_in_width.get() + Iw;
+                      + Ih * data_cube_in_width.get() + Iw;
             uint Kidx = c * data_cube_in_channel.get() * filter_width.get() * filter_width.get()
-                     + rc * filter_width.get() * filter_width.get()
-                     + rh * filter_width.get() + rw;
+                      + rc * filter_width.get() * filter_width.get()
+                      + rh * filter_width.get() + rw;
             // load data from local buffer
             float i_feature, i_kernel;
             data_buffer.get((data_in_address & 0xFFFFF) + Iidx * sizeof(float),
