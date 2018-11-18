@@ -86,6 +86,47 @@ void ConvEngine::DoConv() {
 //#ifdef DEBUG
 	PrintConfigReg();
 //#endif
+	for (unsigned int c=0; c<data_cube_out_channel.get(); ++c) {
+	for (unsigned int h=0; h<data_cube_out_height.get(); ++h) {
+	for (unsigned int w=0; w<data_cube_out_widhth.get(); ++w) {
+		float psum = 0;
+		for (unsigned int rc=0; rc<data_cube_in_channel.get(); ++rc) {
+		for (unsigned int rh=0; rh<filter_width.get(); ++rh) {
+		for (unsigned int rw=0; rw<filter_width.get(); ++rw) {
+      		int Ih = (filter_stride.get() * h + rh);
+      		int Iw = (filter_stride.get() * w + rw);
+      		int Iidx = rc * data_cube_in_height.get() * data_cube_in_width.get()
+      				 + Ih * data_cube_in_width.get()
+      				 + Iw;
+
+      		float mem_r_data;
+			data_buffer.get((data_in_address.get() & 0xFFFFF) + Iidx * sizeof(float),
+								reinterpret_cast<unsigned char*>(&mem_r_data),
+							    sizeof(float));
+
+      		int Kidx = c * data_cube_in_channel.get() * filter_width.get() * filter_width.get() 
+               		 + rc * filter_width.get() * filter_width.get()
+               		 + rh * filter_width.get()
+               		 + rw;
+
+            float mem_r_kernel;
+            data_buffer.get((kernel_addr.get() & 0xFFFFF) + Kidx * sizeof(float),
+								reinterpret_cast<unsigned char*>(&mem_r_kernel),
+							    sizeof(float));
+      		psum += (mem_r_data * mem_r_kernel);
+
+    	}}}
+    	int data_out_offset = c * data_cube_out_height.get() * data_cube_out_widhth.get()
+				            + h * data_cube_out_widhth.get() 
+				            + w;
+  		data_buffer.put((data_out_address.get() & 0xFFFFF) + data_out_offset * sizeof(float),
+				                reinterpret_cast<unsigned char*>(&psum),
+				                sizeof(float));
+  	}}}
+	wait(data_cube_out_channel.get() * data_cube_out_height.get() * data_cube_out_widhth.get() * filter_width.get() * filter_width.get() * pool_period);
+
+
+/*
     for(uint c = 0; c < data_cube_out_channel.get(); ++c){
     for(uint h = 0; h < data_cube_out_height.get() ; ++h){
     for(uint w = 0; w < data_cube_out_widhth.get() ; ++w){
@@ -117,7 +158,7 @@ void ConvEngine::DoConv() {
     // The following wait command will determine the delay of the convolution operation, 
     //we need to deduce an equation from HLS simulation results.
     wait(data_cube_out_channel.get() * data_cube_out_height.get() * data_cube_out_widhth.get() * filter_width.get() * filter_width.get() * pool_period);
-
+*/
     cout << "= " << sc_time_stamp().to_string() << " =\n"
          << "== " << this->name() << " finishes doing convolution ==\n" << endl;
 }
