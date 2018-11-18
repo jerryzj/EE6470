@@ -78,25 +78,25 @@ void conv2d(TVMValue stack_value, int arg_num) {
   conv_config.filter_stride         = stride;
   conv_config.zero_padding          = 0;
   conv_config.data_cube_out_width  = ((conv_config.data_cube_in_height + 2 * conv_config.zero_padding)
-                                     - conv_config.filter_width) / conv_config.filter_stride + 1;
+                                   - conv_config.filter_width) / conv_config.filter_stride + 1;
   conv_config.data_cube_out_height  = conv_config.data_cube_out_width;
   conv_config.data_cube_out_channel = output_shape.c;
   conv_config.data_in_address       = POOL_BUFFER_ADDRESS;
   conv_config.kernel_addr       = POOL_BUFFER_ADDRESS
-                                    + (conv_config.data_cube_in_channel
-                                     * conv_config.data_cube_in_height
-                                     * conv_config.data_cube_in_width
-                                      ) * sizeof(float);
+                                + (conv_config.data_cube_in_channel
+                                * conv_config.data_cube_in_height
+                                * conv_config.data_cube_in_width
+                                ) * sizeof(float);
                     
-  conv_config.data_out_address      = POOL_BUFFER_ADDRESS
-                                    + ((conv_config.data_cube_in_channel
-                                     * conv_config.data_cube_in_height
-                                     * conv_config.data_cube_in_width)
-                                    + (conv_config.filter_width 
-                                     * conv_config.filter_width
-                                     * conv_config.data_cube_in_channel
-                                     * conv_config.data_cube_out_channel
-                                      )) * sizeof(float);
+  conv_config.data_out_address  = POOL_BUFFER_ADDRESS
+                                + ((conv_config.data_cube_in_channel
+                                * conv_config.data_cube_in_height
+                                * conv_config.data_cube_in_width)
+                                + (conv_config.filter_width 
+                                * conv_config.filter_width
+                                * conv_config.data_cube_in_channel
+                                * conv_config.data_cube_out_channel
+                                )) * sizeof(float);
 
   uint test_data_num(conv_config.data_cube_in_channel
                      * conv_config.data_cube_in_height
@@ -118,7 +118,6 @@ void conv2d(TVMValue stack_value, int arg_num) {
   dma_config[0].line_stride     = 0;
   testbench.ConfigConvDMA(dma_config);
 
-  //======= Load Kernel Data ============== //
   uint test_kernel_num(conv_config.data_cube_in_channel
                      * conv_config.filter_width
                      * conv_config.filter_width
