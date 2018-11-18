@@ -1,6 +1,6 @@
 #pragma once
 
-enum ePoolFunction {is_maximum = 0, is_average = 1, is_minimum = 2};
+//enum ePoolFunction {is_maximum = 0, is_average = 1, is_minimum = 2};
 
 /* The following width and size are all specified in bytes */
 
@@ -13,7 +13,7 @@ enum ePoolFunction {is_maximum = 0, is_average = 1, is_minimum = 2};
 #define POOL_REG_NUM          14
 
 #define POOL_BUFFER_ADDRESS   0x40200000
-#define POOL_BUFFER_SIZE      0x00100000
+#define POOL_BUFFER_SIZE      0x00200000
 
 #define GLOBAL_BUFFER_ADDRESS 0x44000000
 #define GLOBAL_BUFFER_SIZE    0x00400000
