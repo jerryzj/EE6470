@@ -83,9 +83,9 @@ void ConvEngine::PrintConfigReg() const{
 void ConvEngine::DoConv() {
 	cout << "= " << sc_time_stamp().to_string() << " =\n"
 	     << "== " << this->name() << " starts doing convolution ==\n\n";
-#ifdef DEBUG
+//#ifdef DEBUG
 	PrintConfigReg();
-#endif
+//#endif
     for(uint c = 0; c < data_cube_out_channel.get(); ++c){
     for(uint h = 0; h < data_cube_out_height.get() ; ++h){
     for(uint w = 0; w < data_cube_out_widhth.get() ; ++w){
@@ -94,11 +94,11 @@ void ConvEngine::DoConv() {
         for(uint rh = 0; rh < filter_width.get(); ++rh){
         for(uint rw = 0; rw < filter_width.get(); ++rw){
             // Calculate index for input data and kernel
-            uint Ih = filter_stride.get() * h + rh;
-            uint Iw = filter_stride.get() * w + rw;
-            uint Iidx = rc * data_cube_in_height.get() * data_cube_in_width.get()
+            int Ih = filter_stride.get() * h + rh;
+            int Iw = filter_stride.get() * w + rw;
+            int Iidx = rc * data_cube_in_height.get() * data_cube_in_width.get()
                      + Ih * data_cube_in_width.get() + Iw;
-            uint Kidx = c * data_cube_in_channel.get() * filter_width.get() * filter_width.get()
+            int Kidx = c * data_cube_in_channel.get() * filter_width.get() * filter_width.get()
                      + rh * filter_width.get() + rw;
             // load data from local buffer
             float i_feature, i_kernel;
@@ -109,14 +109,14 @@ void ConvEngine::DoConv() {
             // Computation
             o_psum += i_feature * i_kernel; 
         }}}
-        uint data_out_offset = c * data_cube_out_height.get() * data_cube_out_widhth.get()
+        int data_out_offset = c * data_cube_out_height.get() * data_cube_out_widhth.get()
                             + h * data_cube_out_widhth.get() + w;
         data_buffer.put((data_out_address & 0xFFFFF) + data_out_offset * sizeof(float),
         reinterpret_cast<unsigned char*>(&o_psum), sizeof(float));
     }}}
     // The following wait command will determine the delay of the convolution operation, 
     //we need to deduce an equation from HLS simulation results.
-    //wait(data_cube_out_channel.get() * data_cube_out_height.get() * data_cube_out_widhth.get() * filter_width.get() * filter_width.get() * pool_period);
+    wait(data_cube_out_channel.get() * data_cube_out_height.get() * data_cube_out_widhth.get() * filter_width.get() * filter_width.get() * pool_period);
 
     cout << "= " << sc_time_stamp().to_string() << " =\n"
          << "== " << this->name() << " finishes doing convolution ==\n" << endl;

@@ -118,18 +118,18 @@ void conv2d(TVMValue stack_value, int arg_num) {
   dma_config[0].line_stride     = 0;
   testbench.ConfigConvDMA(dma_config);
 
-  //======= Load Kernel Data ============== //
-  uint test_kernel_num(conv_config.data_cube_in_channel
+  //Load kernel data
+  uint kernel_num(conv_config.data_cube_in_channel
                      * conv_config.filter_width
                      * conv_config.filter_width
                      * conv_config.data_cube_out_channel);
 
-  testbench.LoadTestData(GLOBAL_BUFFER_ADDRESS, kernel_ptr, test_kernel_num);
+  testbench.LoadTestData(GLOBAL_BUFFER_ADDRESS, kernel_ptr, kernel_num);
 
   dma_config[0].channel_enable  = 1;
   dma_config[0].source_address  = GLOBAL_BUFFER_ADDRESS;
   dma_config[0].dest_address    = conv_config.kernel_addr;
-  dma_config[0].transfer_length = test_kernel_num * sizeof(float);
+  dma_config[0].transfer_length = kernel_num * sizeof(float);
   dma_config[0].transfer_type   = 3;
   dma_config[0].line_length     = 0;
   dma_config[0].line_stride     = 0;
