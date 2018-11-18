@@ -24,7 +24,7 @@ void Testbench::GetResult(uint address, float* data, uint data_num) {
 	i_socket.read_debug<unsigned int>(address, reinterpret_cast<unsigned int*>(data), data_num);
 }
 
-void Testbench::ConfigPoolDMA(vector<DmaChConfig> &config) {
+void Testbench::ConfigConvDMA(vector<DmaChConfig> &config) {
 	/* Check if DMA is idle */
 	uint status;
 	do {
@@ -61,7 +61,7 @@ void Testbench::ConfigPoolDMA(vector<DmaChConfig> &config) {
 	i_socket.write<uint>(POOL_DMA_BASE_ADDRESS + (1 << 2), 0);
 }
 
-void Testbench::ConfigPoolEngine(ConvConfig &config) {
+void Testbench::ConfigConvEngine(ConvConfig &config) {
 	/* Check if pooling engine is ready (idle) for configuring */
 	uint status;
 	do {

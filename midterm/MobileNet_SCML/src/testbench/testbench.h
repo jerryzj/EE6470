@@ -39,8 +39,8 @@ public:
 	~Testbench() {}
 	void LoadTestData(uint address, float* data, uint data_num);
 	void GetResult(uint address, float* data, uint data_num);
-	void ConfigPoolDMA(vector<DmaChConfig> &config);
-	void ConfigPoolEngine(ConvConfig &config);
+	void ConfigConvDMA(vector<DmaChConfig> &config);
+	void ConfigConvEngine(ConvConfig &config);
 	void PrintData(float* data, uint channel, uint height, uint width);
 
 private:
