@@ -39,6 +39,7 @@ void Pooling::do_pooling() {
             result = 0;
             for(unsigned int rh = 0; rh < k_height; ++rh){
             for(unsigned int rw = 0; rw < k_width; ++rw){
+                HLS_CONSTRAIN_LATENCY(0,5,"latency");
                 result += ip_sum[h][w] + tensor[stride*h+rh][stride*w+rw] * kernel[rh][rw];
             }}
 #ifndef NATIVE_SYSTEMC
