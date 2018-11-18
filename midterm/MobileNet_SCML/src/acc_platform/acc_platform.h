@@ -1,6 +1,6 @@
 #pragma once
 
-#include "pool_engine/pool_engine.h"
+#include "conv_engine/conv_engine.h"
 #include "memory/memory_model.h"
 #include "dma/dma.h"
 
@@ -21,10 +21,10 @@ private:
 	scml2::router<uint> bus;
 
 	/* Accelerator */
-	PoolEngine pool_engine;
+	ConvEngine conv_engine;
 
 	/* DMA */
-	DMA pool_dma;
+	DMA conv_dma;
 
 	/* Memory */
 	MemoryModel<unsigned char> global_buffer;
