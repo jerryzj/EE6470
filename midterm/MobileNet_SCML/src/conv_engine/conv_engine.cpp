@@ -89,7 +89,7 @@ void ConvEngine::DoConv() {
 	// Caclulate conv engine delay from HLS 2D convolution simulation
 	int delay = 0;
 	if(filter_stride.get() == 1){
-		if(data_cube_in_channel.get() == 7){// 7*7 delay
+		if(data_cube_in_height.get() == 7){// 7*7 delay
 			delay = data_cube_out_channel * data_cube_in_channel * 4900;
 		}
 		else{ // 17*17 delay
