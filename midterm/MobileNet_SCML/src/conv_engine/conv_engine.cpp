@@ -93,11 +93,23 @@ void ConvEngine::DoConv() {
 			delay = data_cube_out_channel * data_cube_in_channel * 4900;
 		}
 		else{ // 17*17 delay
-			delay = data_cube_out_channel * data_cube_in_channel * 27540;
+			if(data_cube_in_height.get() > 17){
+				int ratio = (data_cube_in_height.get() / 17);
+				delay = data_cube_out_channel * data_cube_in_channel * ratio * ratio * 27540;
+			}
+			else{
+				delay = data_cube_out_channel * data_cube_in_channel * 27540;
+			}
 		}
 	}
 	else{	//17*17 delay
-		delay = data_cube_out_channel * data_cube_in_channel * 3550;
+		if(data_cube_in_height.get() >  17){
+			int ratio = (data_cube_in_height.get() / 17);
+			delay = data_cube_out_channel * data_cube_in_channel * ratio * ratio * 3550;
+		}
+		else{
+			delay = data_cube_out_channel * data_cube_in_channel * 3550;
+		}
 	}
 
     for(uint c = 0; c < data_cube_out_channel.get(); ++c){
