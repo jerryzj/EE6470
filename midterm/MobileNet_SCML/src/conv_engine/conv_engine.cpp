@@ -86,6 +86,14 @@ void ConvEngine::DoConv() {
 #ifdef DEBUG
 	PrintConfigReg();
 #endif
+	// Caclulate conv engine delay from HLS 2D convolution simulation
+	int delay = 0;
+	if(filter_stride.get() == 1){
+		delay = data_cube_out_channel * data_cube_in_channel * 27540;
+	}
+	else{
+		delay = data_cube_out_channel * data_cube_in_channel * 3550;
+	}
 
     for(uint c = 0; c < data_cube_out_channel.get(); ++c){
     for(uint h = 0; h < data_cube_out_height.get() ; ++h){
@@ -118,8 +126,7 @@ void ConvEngine::DoConv() {
     }}}
     // The following wait command will determine the delay of the convolution operation, 
     //we need to deduce an equation from HLS simulation results.
-    //wait(data_cube_out_channel.get() * data_cube_out_height.get() * data_cube_out_widhth.get() * filter_width.get() * filter_width.get() * pool_period);
-
+    wait(delay,SC_NS);
     cout << "= " << sc_time_stamp().to_string() << " =\n"
          << "== " << this->name() << " finishes doing convolution ==\n" << endl;
 }
