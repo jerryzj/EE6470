@@ -7,7 +7,24 @@
 Pooling::Pooling( sc_module_name n ): sc_module( n ){
 #ifndef NATIVE_SYSTEMC
     HLS_FLATTEN_ARRAY(tensor);
+    HLS_FLATTEN_ARRAY(kernel);
+    HLS_FLATTEN_ARRAY(ip_sum);
 #endif
+    for(int i = 0; i < i_width; ++i){
+        for(int j = 0; j < i_height; ++j){
+            tensor[i][j] = 0;
+        }
+    }
+    for(int i = 0; i < k_width; ++i){
+        for(int j = 0; j < k_height; ++j){
+            kernel[i][j] = 0;
+        }
+    }
+    for(int i = 0; i < o_width; ++i){
+        for(int j = 0; j < o_height; ++j){
+            ip_sum[i][j] = 0;
+        }
+    }
     SC_THREAD( do_pooling );
     sensitive << i_clk.pos();
     dont_initialize();
@@ -44,11 +61,11 @@ void Pooling::do_pooling() {
             }}
 #ifndef NATIVE_SYSTEMC
 {
-                HLS_DEFINE_PROTOCOL("output");
-                output.put(result);
+            HLS_DEFINE_PROTOCOL("output");
+            output.put(result);
 }
 #else
-                output.write(result);
+            output.write(result);
 #endif
         }}
     }
