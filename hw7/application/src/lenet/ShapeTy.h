@@ -1,6 +1,6 @@
 #pragma once
 #include <string>
-using uint = unsigned int;
+//using uint = unsigned int;
 class ShapeTy {
 public:
 	uint n;
