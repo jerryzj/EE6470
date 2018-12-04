@@ -49,7 +49,7 @@ unsigned int implyStride(unsigned int in_shape_h, unsigned int out_shape_h) {
 
 // Compensate the offset to the point, useful for the case
 // of that we may want get a continuous subimage
-DataTy* getPtr(void* raw_ptr, const uint64_t offset) {
+DataTy* getPtr(void* raw_ptr, const uint32_t offset) {
   auto* data = static_cast<DataTy*>(raw_ptr);
   const auto data_offset = offset / sizeof(DataTy);
   auto* data_ptr = &(data[data_offset]);

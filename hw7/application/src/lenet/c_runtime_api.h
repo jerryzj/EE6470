@@ -52,7 +52,7 @@ extern "C" {
 #include <stddef.h>
 
 /*! \brief type of array index. */
-typedef int64_t tvm_index_t;
+typedef int32_t tvm_index_t;
 
 /*! \brief Extension device types in TVM */
 typedef enum {
@@ -121,7 +121,7 @@ typedef DLTensor TVMArray;
  *  being passed through API and function calls.
  */
 typedef union {
-  int64_t v_int64;
+  int32_t v_int64;
   double v_float64;
   void* v_handle;
   const char* v_str;

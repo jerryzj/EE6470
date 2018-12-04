@@ -84,14 +84,14 @@ typedef struct {
   /*! \brief The data type of the pointer*/
   DLDataType dtype;
   /*! \brief The shape of the tensor */
-  int64_t* shape;
+  int32_t* shape;
   /*!
    * \brief strides of the tensor,
    *  can be NULL, indicating tensor is compact.
    */
-  int64_t* strides;
+  int32_t* strides;
   /*! \brief The offset in bytes to the beginning pointer to data */
-  uint64_t byte_offset;
+  uint32_t byte_offset;
 } DLTensor;
 
 #endif  // DLPACK_DLPACK_H_

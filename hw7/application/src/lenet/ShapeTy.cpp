@@ -11,7 +11,7 @@ ShapeTy::ShapeTy()
 	: n(1), c(1), h(1), w(1)
 {}
 
-ShapeTy::ShapeTy(int64_t* ptr, int num)
+ShapeTy::ShapeTy(int32_t* ptr, int num)
 	: n(1), c(1)
 {
 	put(ptr, num);
@@ -41,7 +41,7 @@ uint ShapeTy::size() const {
 	return n*c*h*w;
 }
 
-void ShapeTy::put(int64_t* ptr, int num) {
+void ShapeTy::put(int32_t* ptr, int num) {
 	if (num == 2) {
 		h = ptr[0];
 		w = ptr[1];

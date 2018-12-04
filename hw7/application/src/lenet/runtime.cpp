@@ -6,7 +6,7 @@
 
 void* TVMBackendAllocWorkspace(int device_type,
                                        int device_id,
-                                       uint64_t nbytes,
+                                       uint32_t nbytes,
                                        int dtype_code_hint,
                                        int dtype_bits_hint) {
   void* ret = std::malloc(nbytes);
