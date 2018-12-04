@@ -1,7 +1,6 @@
 #include <sstream>
 #include <array>
 #include <cassert>
-#include <iostream>
 #include "ShapeTy.h"
 ShapeTy::ShapeTy(uint n_, uint c_, uint h_, uint w_)
 	: n(n_), c(c_), h(h_), w(w_)
@@ -33,8 +32,6 @@ std::string ShapeTy::to_str(const std::string seperator, const bool ShowIndex,
 
 uint ShapeTy::size() const {
 	assert(n>=1);
-	// 1204 debug
-	std::cout<<"C = "<<c<<"\n";
 	assert(c>=1);
 	assert(h>=1);
 	assert(w>=1);
