@@ -1,0 +1,11 @@
+cd platform
+mkdir build
+cd build
+cmake ..
+make -j
+cd ../../application
+mkdir build
+cd build
+cmake ..
+make -j
+make lenet
