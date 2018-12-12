@@ -149,7 +149,6 @@ void pool2d(TVMValue stack_value, int arg_num) {
                   * pool_config.data_cube_out_width);
 
   ctrl_api.write_data<float>(GLOBAL_BUFFER_ADDRESS, data_ptr, test_data_num);
-  //testbench.LoadTestData(GLOBAL_BUFFER_ADDRESS, data_ptr, test_data_num);
 
   /* Configure DMA to load test data into buffer from RAM */
   vector<DmaChConfig> dma_config(1);
