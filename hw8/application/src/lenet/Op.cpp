@@ -11,7 +11,8 @@
 #include "sync.h"
 
 extern PoolConfig pool_config;
-extern float* input_f, output_f;
+extern float* input_f;
+extern float* output_f;
 extern int core_num;
 
 

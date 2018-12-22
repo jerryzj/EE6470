@@ -6,7 +6,8 @@
 #include "control_api.h"
 
 PoolConfig pool_config;   // Pooling configuration
-float* input_f, output_f; // Input/Output feature
+float* input_f;
+float* output_f; // Input/Output feature
 int core_num;             // Number of core
 
 void BaremetalDNN_model_wraper();
