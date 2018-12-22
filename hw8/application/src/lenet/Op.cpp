@@ -7,7 +7,6 @@
 #include "OpUtil.h"
 #include "ShapeTy.h"
 #include "Config.h"
-#include "control_api.h"
 #include "sync.h"
 
 extern PoolConfig pool_config;
@@ -126,15 +125,13 @@ void pool2d(TVMValue stack_value, int arg_num) {
     std::cout << "stride: " << stride << "\n";
   }
   // Copy configuration information
-  pool_config.data_cube_in_width    = data_shape.w;
-  pool_config.data_cube_in_height   = data_shape.h;
-  pool_config.data_cube_in_channel  = data_shape.c;
-  pool_config.filter_width          = 2;
-  pool_config.filter_stride         = stride;
-  pool_config.zero_padding          = 0;
-  pool_config.data_cube_out_width  = output_shape.w;
-  pool_config.data_cube_out_height  = output_shape.h;
-  pool_config.data_cube_out_channel = output_shape.c;
+  pool_config.in_w   = data_shape.w;
+  pool_config.in_h   = data_shape.h;
+  pool_config.in_ch  = data_shape.c;
+  pool_config.stride = stride;
+  pool_config.out_w  = output_shape.w;
+  pool_config.out_h  = output_shape.h;
+  pool_config.out_ch = output_shape.c;
   // Copy Input feature map
   input_f  = new float(data_shape.c   * data_shape.h   * data_shape.w);
   output_f = new float(output_shape.c * output_shape.h * output_shape.w);
@@ -146,8 +143,8 @@ void pool2d(TVMValue stack_value, int arg_num) {
   }}}
   barrier(core_num);
   // Real compuatations, divide computation by channel
-  int ch_start = (pool_config.data_cube_out_channel / core_num) * gethartid();
-  int ch_end   = (pool_config.data_cube_out_channel / core_num) * (gethartid()+ 1);
+  int ch_start = (pool_config.out_ch / core_num) * gethartid();
+  int ch_end   = (pool_config.out_ch / core_num) * (gethartid()+ 1);
   for(unsigned int c = ch_start; c < ch_end; ++c) {
   for(unsigned int h = 0; h < output_shape.h; ++h) {
   for(unsigned int w = 0; w < output_shape.w; ++w) {
