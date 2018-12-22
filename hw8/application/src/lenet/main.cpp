@@ -60,7 +60,6 @@ extern "C" void thread_entry(int cid, int nc) {
     			}}
     			output_f[Oidx] = max;
   			}}}
-			//std::cout<<"Finish Pooling in Core"<<gethartid()<<std::endl;
 			barrier(core_num);
 		}
 	}

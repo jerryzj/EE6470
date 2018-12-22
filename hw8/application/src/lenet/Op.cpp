@@ -172,9 +172,9 @@ void pool2d(TVMValue stack_value, int arg_num) {
   if (print_data) {
     // In this example, only prints the first channel
     std::cout << "Input: " << "\n";
-    printTensor(data_shape, data_ptr, 0);
+    printTensor(data_shape, data_ptr);
     std::cout << "Output: " << "\n";
-    printTensor(output_shape, output_ptr, 0);
+    printTensor(output_shape, output_ptr);
   }
 
 }
