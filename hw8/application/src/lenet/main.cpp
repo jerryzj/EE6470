@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <cfloat>
+#include <cmath>
 #include "sync.h"
 #include "control_api.h"
 
