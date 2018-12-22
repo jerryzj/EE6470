@@ -10,8 +10,8 @@
 #include "sync.h"
 
 extern PoolConfig pool_config;
-extern float* input_f;
-extern float* output_f;
+extern float input_f[4 * 12 * 12];
+extern float output_f[4 * 6 * 6];
 extern int core_num;
 
 
@@ -133,8 +133,6 @@ void pool2d(TVMValue stack_value, int arg_num) {
   pool_config.out_h  = output_shape.h;
   pool_config.out_ch = output_shape.c;
   // Copy Input feature map
-  input_f  = new float(data_shape.c   * data_shape.h   * data_shape.w);
-  output_f = new float(output_shape.c * output_shape.h * output_shape.w);
   for(unsigned int c = 0; c < output_shape.c; ++c) {
   for(unsigned int h = 0; h < output_shape.h; ++h) {
   for(unsigned int w = 0; w < output_shape.w; ++w) {
@@ -173,13 +171,6 @@ void pool2d(TVMValue stack_value, int arg_num) {
     const auto Oidx = output_shape.Idx(c,h,w);
     output_ptr[Oidx] = output_f[Oidx];
   }}}
-  // Deallocate memory
-  if(input_f){
-    delete input_f;
-  }
-  if(output_f){
-    delete output_f;
-  }
 
   if (print_data) {
     // In this example, only prints the first channel
