@@ -23,6 +23,14 @@ extern "C" void thread_entry(int cid, int nc) {
 		for(int run = 0; run < 2; run++){
 			std::cout<<"Core: "<<gethartid()<<std::endl;
 			barrier(core_num);
+			std::cout<<"Pool Config data\n";
+			std::cout<<"In_c"<<pool_config.in_ch<<"\n";
+			std::cout<<"In_w"<<pool_config.in_w<<"\n";
+			std::cout<<"In_h"<<pool_config.in_h<<"\n";
+			std::cout<<"stride"<<pool_config.stride<<"\n";
+			std::cout<<"Out_c"<<pool_config.out_ch<<"\n";
+			std::cout<<"Out_w"<<pool_config.out_w<<"\n";
+			std::cout<<"Out_h"<<pool_config.out_h<<"\n";
 			// Real compuatations, divide computation by channel
 			int ch_start = (pool_config.out_ch / core_num) * gethartid();
 			int ch_end;
