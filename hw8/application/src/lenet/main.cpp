@@ -20,7 +20,7 @@ extern "C" void thread_entry(int cid, int nc) {
 		BaremetalDNN_model_wraper();
 	}
 	else{
-		std::cout<<"Core: "<<gethartid()<<endl;
+		std::cout<<"Core: "<<gethartid()<<std::endl;
 		barrier(core_num);
 		// Real compuatations, divide computation by channel
 		int ch_start = (pool_config.out_ch / core_num) * gethartid();
