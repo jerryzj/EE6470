@@ -20,15 +20,16 @@ extern "C" void thread_entry(int cid, int nc) {
 	else{
 		// Real compuatations, divide computation by channel
 		int ch_start = (pool_config.data_cube_out_channel / core_num) * gethartid();
+		int ch_end;
 		if(gethartid() == core_num - 1){
-			int ch_end = pool_config.data_cube_out_channel;
+			ch_end = pool_config.data_cube_out_channel;
 		}
 		else{
-			int ch_end = (pool_config.data_cube_out_channel / core_num) * (gethartid()+ 1);
+			ch_end = (pool_config.data_cube_out_channel / core_num) * (gethartid()+ 1);
 		}
 		for(unsigned int c = ch_start; c < ch_end; ++c) {
 		for(unsigned int h = 0; h < pool_config.data_cube_out_height; ++h) {
-		for(unsigned int w = 0; w < output_shape.data_cube_out_width; ++w) {
+		for(unsigned int w = 0; w < pool_config.data_cube_out_width; ++w) {
     		//const auto Oidx = output_shape.Idx(c,h,w);
     		const auto Oidx = c * pool_config.data_cube_out_height * pool_config.data_cube_out_width
     		                + h * pool_config.data_cube_out_width
@@ -42,7 +43,7 @@ extern "C" void thread_entry(int cid, int nc) {
     			const auto Iidx = c * pool_config.data_cube_in_height * pool_config.data_cube_in_width
     		                    + h * pool_config.data_cube_in_width
     		                    + w;
-    			max = std::fmax(max, input_f[Iidx]);
+    			max = fmax(max, input_f[Iidx]);
     		}}
     		output_f[Oidx] = max;
   		}}}
