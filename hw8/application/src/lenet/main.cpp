@@ -8,7 +8,6 @@
 PoolConfig pool_config;
 float input_f[4* 12* 12];
 float output_f[4*6*6];
-//float* input_f, output_f;
 int core_num;             // Number of core
 
 void BaremetalDNN_model_wraper();
