@@ -132,9 +132,9 @@ void pool2d(TVMValue stack_value, int arg_num) {
   pool_config.out_h  = output_shape.h;
   pool_config.out_ch = output_shape.c;
   // Copy Input feature map
-  for(unsigned int c = 0; c < output_shape.c; ++c) {
-  for(unsigned int h = 0; h < output_shape.h; ++h) {
-  for(unsigned int w = 0; w < output_shape.w; ++w) {
+  for(unsigned int c = 0; c < data_shape.c; ++c) {
+  for(unsigned int h = 0; h < data_shape.h; ++h) {
+  for(unsigned int w = 0; w < data_shape.w; ++w) {
     const auto Iidx = data_shape.Idx(c,h,w);
     input_f[Iidx] = data_ptr[Iidx];
   }}}
