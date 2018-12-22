@@ -1,4 +1,5 @@
 # EE6470 Implementation of Many-Core System
+
 * Department of Electrical Engineering, National Tsing Hua University, Taiwan
 * Instructor: Jing-Jia, Liou
 
