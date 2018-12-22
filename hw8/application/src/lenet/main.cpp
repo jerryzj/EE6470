@@ -21,7 +21,7 @@ extern "C" void thread_entry(int cid, int nc) {
 		BaremetalDNN_model_wraper();
 	}
 	else{
-		for(int run = 0; run < 2; ++run){
+		for(int run = 0; run < 2; run++){
 			std::cout<<"Core: "<<gethartid()<<std::endl;
 			barrier(core_num);
 			// Real compuatations, divide computation by channel
