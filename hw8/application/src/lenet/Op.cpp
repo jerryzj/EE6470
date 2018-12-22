@@ -155,8 +155,8 @@ void pool2d(TVMValue stack_value, int arg_num) {
       const auto Ih = (h * pool_config.stride) + fh;
       const auto Iw = (w * pool_config.stride) + fw;
       const auto Iidx = c * pool_config.in_h * pool_config.in_w
-                      + h * pool_config.in_w
-                      + w;
+                      + Ih * pool_config.in_w
+                      + Iw;
       max = fmax(max, input_f[Iidx]);
     }}
     output_f[Oidx] = max;
