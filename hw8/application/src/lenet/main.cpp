@@ -51,5 +51,6 @@ extern "C" void thread_entry(int cid, int nc) {
     		}}
     		output_f[Oidx] = max;
   		}}}
+		barrier(core_num);
 	}
 }

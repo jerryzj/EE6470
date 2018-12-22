@@ -144,20 +144,19 @@ void pool2d(TVMValue stack_value, int arg_num) {
   int ch_start = (pool_config.out_ch / core_num) * gethartid();
   int ch_end   = (pool_config.out_ch / core_num) * (gethartid()+ 1);
   for(unsigned int c = ch_start; c < ch_end; ++c) {
-  for(unsigned int h = 0; h < output_shape.h; ++h) {
-  for(unsigned int w = 0; w < output_shape.w; ++w) {
-    //const auto Oidx = output_shape.Idx(c,h,w);
-    const auto Oidx = c * output_shape.h * output_shape.w
-                    + h * output_shape.w
+  for(unsigned int h = 0; h < pool_config.out_h; ++h) {
+  for(unsigned int w = 0; w < pool_config.out_w; ++w) {
+    const auto Oidx = c * pool_config.out_h * pool_config.out_w
+                    + h * pool_config.out_w
                     + w;
     // initialize with minimum value
     auto max = -FLT_MAX;
-    for(unsigned int fh = 0; fh < stride; ++fh) {
-    for(unsigned int fw = 0; fw < stride; ++fw) {
-      const auto Ih = (h * stride) + fh;
-      const auto Iw = (w * stride) + fw;
-      const auto Iidx = c * data_shape.h * data_shape.w
-                      + h * data_shape.w
+    for(unsigned int fh = 0; fh < pool_config.stride; ++fh) {
+    for(unsigned int fw = 0; fw < pool_config.stride; ++fw) {
+      const auto Ih = (h * pool_config.stride) + fh;
+      const auto Iw = (w * pool_config.stride) + fw;
+      const auto Iidx = c * pool_config.in_h * pool_config.in_w
+                      + h * pool_config.in_w
                       + w;
       max = fmax(max, input_f[Iidx]);
     }}
