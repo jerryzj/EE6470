@@ -13,7 +13,7 @@ $ ./clean.sh
 
 ## Introduction
 
-In this homework, I port Lenet to a RISC-V virtual platform and use pooling engine on the platform to finish the pooling computation.
+In this homework, I implement a multi-threaded pooling on existing Lenet.
 
 ## Results
 
@@ -25,23 +25,56 @@ The network finishes correctly!
 Info: /OSCI/SystemC: Simulation stopped by user.
 Info
 Info ---------------------------------------------------
-Info CPU 'cpu.RISC-V' STATISTICS
-Info   Type                  : riscv (RV32I)
+Info CPU 'multi_cpu_core.cpu_3.riscv_3' STATISTICS
+Info   Type                  : riscv (RV32IMAC)
 Info   Nominal MIPS          : 1000
-Info   Final program counter : 0xaea14
-Info   Simulated instructions: 44,815,463
-Info   Simulated MIPS        : 2.1
+Info   Final program counter : 0xaf1dc
+Info   Simulated instructions: 65,000,126
+Info   Simulated MIPS        : run too short for meaningful result
+Info ---------------------------------------------------
+Info
+Info ---------------------------------------------------
+Info CPU 'multi_cpu_core.cpu_2.riscv_2' STATISTICS
+Info   Type                  : riscv (RV32IMAC)
+Info   Nominal MIPS          : 1000
+Info   Final program counter : 0xaf1dc
+Info   Simulated instructions: 65,000,142
+Info   Simulated MIPS        : run too short for meaningful result
+Info ---------------------------------------------------
+Info
+Info ---------------------------------------------------
+Info CPU 'multi_cpu_core.cpu_1.riscv_1' STATISTICS
+Info   Type                  : riscv (RV32IMAC)
+Info   Nominal MIPS          : 1000
+Info   Final program counter : 0xaf1dc
+Info   Simulated instructions: 65,000,135
+Info   Simulated MIPS        : run too short for meaningful result
+Info ---------------------------------------------------
+Info
+Info ---------------------------------------------------
+Info CPU 'multi_cpu_core.cpu_0.riscv_0' STATISTICS
+Info   Type                  : riscv (RV32IMAC)
+Info   Nominal MIPS          : 1000
+Info   Final program counter : 0xaf1dc
+Info   Simulated instructions: 64,012,002
+Info   Simulated MIPS        : run too short for meaningful result
+Info ---------------------------------------------------
+Info
+Info ---------------------------------------------------
+Info TOTAL
+Info   Simulated instructions: 259,012,405
+Info   Simulated MIPS        : run too short for meaningful result
 Info ---------------------------------------------------
 Info
 Info ---------------------------------------------------
 Info SIMULATION TIME STATISTICS
-Info   Simulated time        : 0.04 seconds
-Info   User time             : 21.21 seconds
-Info   System time           : 0.01 seconds
-Info   Elapsed time          : 21.22 seconds
+Info   Simulated time        : 0.06 seconds
+Info   User time             : 0.45 seconds
+Info   System time           : 0.00 seconds
+Info   Elapsed time          : 0.46 seconds
 Info ---------------------------------------------------
 ```
 
 ## Conclusion & Discussion
 
-Data type is very important.
+Data synchronization is very important.
